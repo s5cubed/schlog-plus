@@ -69,9 +69,11 @@ function getSettings(settings) {
 		}
 
 		for (var i= 0; i < effectElements.length; i++) {
-			effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0], settings.schlog_or_shlog.value.split(" ")[2]); 
-			effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" ")[2].toLowerCase()); 
-			effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
+            if (effectElements[i] != undefined) {
+                effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0], settings.schlog_or_shlog.value.split(" ")[2]); 
+                effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" ")[2].toLowerCase()); 
+                effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
+            }
 		}
 		
 	}
@@ -110,19 +112,25 @@ function getSettings(settings) {
   
   // Enables profile music, checks on member pages only, makes sure you have an about section
 	if (settings.enable_profile_music.value == true && window.location.href.includes("members") && document.getElementById("about") ){
+        console.log("Attempting to load music player")
 		var waitdiv = document.createElement("div")
 		waitdiv.textContent = "Loading music player..."
 		waitdiv.style = "float:right;"
 		document.getElementsByClassName("memberHeader-buttons")[0].appendChild(waitdiv);
 		// Extension clicks on your about section to force the site to load your about content and get any code strings you might have in there
+        console.log("Clicking on about page")
 		document.getElementById("about").click(); 
 		// After 300 ms, it goes back to your main profile page and creates the music player 3 seconds later. The wait time is to let the about elements load
+        console.log("Attempting to load music player")
 		setTimeout(document.getElementsByClassName("tabs-tab")[0].click(), 300)
 		setTimeout(startMusicPlayer, 3000);
 		function startMusicPlayer() {
+            console.log("Attempting to spawn music player.")
 			var aboutText = document.getElementsByClassName("tabPanes js-memberTabPanes")[0].children[3].getElementsByClassName("bbWrapper")[0].childNodes
+			console.log("Variable: aboutText = ", aboutText)
 			// Injects into your buttons section on your profile
 			var playerlocation = document.getElementsByClassName("memberHeader-buttons")[0]
+			console.log("Variable: playerlocation = ", playerlocation)
 			var playerNode = document.createElement("audio")
 			playerNode.volume = .5;
 			playerNode.controls = !settings.profile_music_hide_controls.value;
@@ -135,6 +143,7 @@ function getSettings(settings) {
 			for (var i = 0; i < aboutText.length; i++) {
 				if (aboutText[i].constructor == Text && aboutText[i].data.includes("[MUSIC]") && aboutText[i].data.includes("[/MUSIC]")) {
 					var musicUrl = aboutText[i].data.replace("[MUSIC]","").replace("\n","").replace("[/MUSIC]","")
+                    console.log("This is the URL the player is attempting to load: " + musicUrl)
 					if (musicUrl.startsWith("http")) {
 						playerSource.src = musicUrl;
 						playerNode.appendChild(playerSource);

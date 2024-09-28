@@ -4,13 +4,17 @@ body {
     color: #800;
 }
 
+textarea {
+    max-width:90%
+}
+
 #character {
     position: fixed;
     float: left;
     z-index: -1;
     display: flex;
     height: 100vh;
-    margin-top: -50em;
+    margin-top: -70em;
     margin-left: -10px;
 }
 
