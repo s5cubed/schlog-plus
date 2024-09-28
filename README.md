@@ -28,3 +28,6 @@ You can set custom profile music and people with the extension will be able to h
 
 # Documentation
 You can find all relevant documentation in the <a href="https://github.com/sss5sss555s5s5s5/schlog-plus/wiki">Wiki.</a>
+
+# Forking
+When forking this project, please make sure to keep your credits and attributions to me, the original creator. You can do so by providing a link to this repo, my github page, my schlog page or https://s5s5s5.com
