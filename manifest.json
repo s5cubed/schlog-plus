@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "Schlog+",
+  "version": "1.0",
+
+  "description": "Schlog / Shlog enhancement project by Soygoy / s. ",
+  "homepage_url": "https://s5s5s5.com",
+  "permissions": ["activeTab","storage"],
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+
+   "background": {
+        "scripts": ["background.js"]
+    },
+  
+  "content_scripts": [
+    {
+      "matches": ["*://*.soyjak.blog/*"],
+      "js": ["schlogplus.js"]
+    }
+  ],
+  
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true,
+    "browser_style": true
+  },
+  
+  "browser_action": {
+    "default_icon": "icons/icon-32.png",
+    "default_title": "Schlog+",
+    "default_popup": "popup/popup.html"
+  }
+  
+  
+}

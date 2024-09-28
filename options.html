@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Schlog+ Options Page</title>
+        <link rel="stylesheet" href="options.css">
+    </head>
+    <body>
+        <h1>Schlog+</h1>
+        <div class="box">
+            <div class="box-header">
+            Welcome to Schlog+
+            </div>
+            <p>Here you can find all settings and options related to Schlog+</p>
+        </div>
+    <form>
+        <div class="box" id="main-settings">
+            <div class="box-header">
+            Settings
+            </div>
+            
+            <h2>Dummy Settings</h2>
+            You can ignore this.
+            <br>
+            <label class="setting">
+                Do this?
+                <input type="checkbox">
+            </label>
+            <br>
+            <label class="setting">
+                Do that?
+                <input type="checkbox">
+            </label>
+            <br>
+            <label class="setting">
+                How much?
+                <input type="range" min="1" max="5" value="2" class="slider">
+            </label>
+            
+            <h2>More stuff</h2>
+            
+            <label class="setting">
+                Choose one.
+                <select name="cars" id="cars">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="opel">Opel</option>
+                    <option value="audi">Audi</option>
+                </select>
+            </label>
+            <br>
+            
+            <label class="setting">
+                Type stuff
+                <input type="text" id="lname" name="lname">
+            </label>
+            
+        </div>
+        </form>
+        
+        <div class="box">
+            <div class="box-header">
+            Credits
+            </div>
+            <p>Schlog+ is an extension developed and created by Soygoy a.k.a s. for soyjak.blog</p>
+        </div>
+        
+        <script src="options.js"></script>
+        
+        <img id="character" src="/images/autism.png">
+    </body>
+</html>

@@ -1,0 +1,41 @@
+body {
+    background: #ffe url("/images/fade.png") top repeat-x;
+    text-align: center;
+    color: #800;
+}
+
+#character {
+    position: fixed;
+    float: left;
+    z-index: -1;
+    display: flex;
+    height: 100vh;
+    margin-top: -50em;
+    margin-left: -10px;
+}
+
+#submit-button {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#main-settings {
+    line-height: 7px;
+}
+
+.box {
+    border-style: groove;
+    border-color: #800;
+    color: black;
+    background-color: white;
+    margin: auto;
+    width: 50%;
+    margin-top: 20px;
+}
+
+.box-header {
+    background-color: #800;
+    padding: 2px;
+    color:white;
+    text-align: center;
+}
