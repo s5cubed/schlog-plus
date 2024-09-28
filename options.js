@@ -101,6 +101,41 @@ var settings = {
         "description": "Auto word filter Schlog to Shlog, or Shlog to Schlog?",
     },
 }
+function readJson(path, callfunc) {
+	fetch(path).then(
+		(res) => {
+			if (!res.ok) {
+				throw new Error(`HTTP error! Status: ${res.status}`);
+			}
+			return res.json();
+		}
+		
+	).then(
+		(data) => callfunc(data)
+	).catch(
+		(error) =>console.error("Unable to fetch data:", error)
+	);
+}
+
+function checkForUpdates(myVersion) {
+	readJson("https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/manifest.json", function(data) {
+			console.log("Github version: " + data.version)
+			if (myVersion == data.version) {
+				document.getElementById("updateLabel").textContent = "You are on the latest version (" + myVersion + ")"
+			}
+			else {
+				document.getElementById("updateLabel").textContent = "A new update is available! Version (" + data.version + "). You are running an outdated version (" + myVersion + ")"
+				var updateLink = document.createElement("a")
+				updateLink.id = "updateLink"
+				updateLink.textContent = "Click here to update"
+				updateLink.href = "https://github.com/sss5sss555s5s5s5/schlog-plus/archive/refs/heads/main.zip"
+				document.getElementById("main-topbox").appendChild(updateLink)
+				document.getElementById("main-topbox").appendChild(document.createElement("br"))
+			}
+		}
+	)
+}
+readJson("manifest.json", function(data) {checkForUpdates(data.version)})
 
 var browserType = "firefox"
 if (typeof browser === "undefined") {

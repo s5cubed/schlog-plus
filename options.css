@@ -18,6 +18,10 @@ textarea {
     margin-left: -10px;
 }
 
+#updateLink {
+    font-size: 30px;
+}
+
 #submit-button {
     margin-bottom: 10px;
     margin-top: 10px;

@@ -132,6 +132,7 @@ function getSettings(settings) {
 			var playerlocation = document.getElementsByClassName("memberHeader-buttons")[0]
 			console.log("Variable: playerlocation = ", playerlocation)
 			var playerNode = document.createElement("audio")
+			playerNode.id = "profileMusicPlayer"
 			playerNode.volume = .5;
 			playerNode.controls = !settings.profile_music_hide_controls.value;
 			playerNode.style = "height: 30px;float: right;"
@@ -147,9 +148,24 @@ function getSettings(settings) {
 					if (musicUrl.startsWith("http")) {
 						playerSource.src = musicUrl;
 						playerNode.appendChild(playerSource);
+                        playerNode.autoplay = settings.profile_music_autoplay.value; // Double check
 						playerlocation.appendChild(playerNode);
 					}
 				}
+				else {
+					if (aboutText[i].tagName == "A") {
+						var musicUrl = ""
+						if (aboutText[i].textContent.toLowerCase() == "[music]") {
+							musicUrl = aboutText[i].href
+						}
+						if (musicUrl.startsWith("http")) {
+							playerSource.src = musicUrl;
+							playerNode.appendChild(playerSource);
+							playerNode.autoplay = settings.profile_music_autoplay.value; // Double check
+							playerlocation.appendChild(playerNode);
+						}
+					}
+                }
 			}
 		}
 	}
