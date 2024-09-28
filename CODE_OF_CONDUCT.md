@@ -1,4 +1,4 @@
-# Contributor Code of Conduct
+# No.
 
 This project adheres to No Code of Conduct.  We are all adults.  We accept anyone's contributions.  Nothing else matters.
 
