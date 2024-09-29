@@ -9,6 +9,7 @@
 // This code is lcensed under the MIT License, please credit me in your forks.
 // ===========================================================================
 
+var profile_music_pause_offtab = true;
 var browserType = "firefox"
 if (typeof browser === "undefined") {
 	var browser = chrome;
@@ -34,6 +35,8 @@ function getSettings(settings) {
 		style.textContent = settings.custom_stylesheet.value
 		document.head.appendChild(style)
 	}
+	
+	profile_music_pause_offtab = settings.profile_music_pause_offtab.value
 	// If true, the reaction tooltip will become a grid.
 	if (settings.toggle_react_grid.value == true) {
 		var style = document.createElement("style")
@@ -77,38 +80,11 @@ function getSettings(settings) {
 		}
 		
 	}
-  
-	// If you are currently on a thread page...
-	if (window.location.href.includes("threads")) {
-		var messageInner = document.getElementsByClassName("message-inner")
-		for (var i= 0; i < messageInner.length; i++) {
-			// If toggle_ignore_guests is true and there are guests on the page, their messages will be hidden. 
-			if (settings.toggle_ignore_guests.value && messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.includes("Guest")) {
-				messageInner[i].style = "display:none;"
-			}
-			// Custom user badges. If this is enabled, code will look through your usertitle for a string like "[#ccc] Text" and give you a custom user badge.
-			
-			if (settings.toggle_custom_badges.value && messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.includes("[#")) {
-				// This statement checks to make sure that people don't try to break the code by something of "[#[#[][[][#" etc.
-				if ( (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.match(/]/g) || []).length == 1 && (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.match(/#/g) || []).length == 1) {
-					var bannerText = messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("]")[1]
-					var bannerColour = "#" + messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("[#")[1].split("]")[0]
-					messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent = messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("[#")[0]
-					var bannerDiv = document.createElement("div")
-					var bannerStrong = document.createElement("strong")
-					bannerStrong.textContent = bannerText
-					bannerDiv.className = "userBanner"
-					bannerDiv.style = "display:block;color:white;background-color:" + bannerColour + ";"
-					bannerDiv.appendChild(bannerStrong)
-					messageInner[i].getElementsByClassName("message-userDetails")[0].appendChild(bannerDiv);
-				}
-			}
-			// If a user's username is inside of the ignore list, their message gets hidden.
-			if (settings.ignore_list.value.includes(messageInner[i].getElementsByClassName("username")[0].textContent)) {
-				messageInner[i].style = "display:none;"
-			}
-		}
-	}
+	updateFunction(settings)
+	// When you click on new post or show new posts this will trigger.
+	document.body.addEventListener("mousedown", event=> {
+		setTimeout(updateFunction, 1000, settings);
+	})
   
   // Enables profile music, checks on member pages only, makes sure you have an about section
 	if (settings.enable_profile_music.value == true && window.location.href.includes("members") && document.getElementById("about") ){
@@ -135,7 +111,7 @@ function getSettings(settings) {
 			playerNode.id = "profileMusicPlayer"
 			playerNode.volume = .5;
 			playerNode.controls = !settings.profile_music_hide_controls.value;
-			playerNode.style = "height: 30px;float: right;"
+			playerNode.style = "height: 30px;float: right;";
 			playerNode.autoplay = settings.profile_music_autoplay.value;
 			playerNode.loop = settings.profile_music_loop.value;
 			var playerSource = document.createElement("source");
@@ -148,8 +124,8 @@ function getSettings(settings) {
 					if (musicUrl.startsWith("http")) {
 						playerSource.src = musicUrl;
 						playerNode.appendChild(playerSource);
-                        playerNode.autoplay = settings.profile_music_autoplay.value; // Double check
 						playerlocation.appendChild(playerNode);
+						if (settings.profile_music_autoplay.value) {playerNode.play()}
 					}
 				}
 				else {
@@ -166,6 +142,91 @@ function getSettings(settings) {
 						}
 					}
                 }
+			}
+		}
+	}
+	
+	if (window.location.href.includes("account-details")) {
+		var musicInputField = document.createElement("input")
+		var buttonBar = document.getElementsByClassName("fr-toolbar fr-ltr fr-desktop fr-top fr-basic")[0]
+		var aboutMe = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
+		musicInputField.placeholder = "Music url..."
+		musicInputField.id = "musicInputField"
+		musicInputField.style = "max-height:30px;margin-top: 7px;"
+		buttonBar.insertBefore(musicInputField, buttonBar.childNodes[3])
+		musicInputField.addEventListener("keypress", function(event) {
+				if (event.key === "Enter") {
+					event.preventDefault();
+					if (musicInputField.value.includes("http")) {
+						//console.log("Enter pressed!")
+						var pElement = document.createElement("p")
+						var aElement = document.createElement("a")
+						aElement.href = musicInputField.value
+						aElement.target = "_blank"
+						aElement.textContent ="[Music]"
+						pElement.appendChild(aElement)
+						aboutMe.appendChild(pElement)
+					}
+				}
+			}
+		); 
+	}
+}
+
+var isPlayerPaused = true
+
+document.addEventListener("visibilitychange", (event) => {
+	if (document.visibilityState == "visible") {
+		// Tab is active
+		if (document.getElementById("profileMusicPlayer") != null && profile_music_pause_offtab) {
+			if (isPlayerPaused == false) {
+				document.getElementById("profileMusicPlayer").play()
+			}
+		}
+	} else {
+		// Tab is NOT active
+		if (document.getElementById("profileMusicPlayer") != null && profile_music_pause_offtab) {
+			isPlayerPaused = document.getElementById("profileMusicPlayer").paused
+			document.getElementById("profileMusicPlayer").pause()	
+		}
+	}
+});
+
+function updateFunction(settings) {
+	// If you are currently on a thread page...
+	if (window.location.href.includes("threads") || window.location.href.includes("conversations")) {
+		var messageInner = document.getElementsByClassName("message-inner")
+		for (var i= 0; i < messageInner.length; i++) {
+			// If toggle_ignore_guests is true and there are guests on the page, their messages will be hidden. 
+			if (messageInner[i].getElementsByClassName("userTitle message-userTitle").length > 0) {
+				if (settings.toggle_ignore_guests.value && messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.includes("Guest")) {
+					messageInner[i].style = "display:none;"
+				}
+			}
+			
+			// If a user's username is inside of the ignore list, their message gets hidden.
+			if (messageInner[i].getElementsByClassName("username").length > 0) {
+					if (settings.ignore_list.value.includes(messageInner[i].getElementsByClassName("username")[0].textContent)) {
+						messageInner[i].style = "display:none;"
+				}
+			}
+			
+			if (settings.toggle_custom_badges.value && messageInner[i] != undefined && messageInner[i].getElementsByClassName("userTitle message-userTitle").length > 0) {
+				if (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.includes("[#")) {
+					// This statement checks to make sure that people don't try to break the code by something of "[#[#[][[][#" etc.
+					if ( (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.match(/]/g) || []).length == 1 && (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.match(/#/g) || []).length == 1) {
+						var bannerText = messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("]")[1]
+						var bannerColour = "#" + messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("[#")[1].split("]")[0]
+						messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent = messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("[#")[0]
+						var bannerDiv = document.createElement("div")
+						var bannerStrong = document.createElement("strong")
+						bannerStrong.textContent = bannerText
+						bannerDiv.className = "userBanner"
+						bannerDiv.style = "display:block;color:white;background-color:" + bannerColour + ";"
+						bannerDiv.appendChild(bannerStrong)
+						messageInner[i].getElementsByClassName("message-userDetails")[0].appendChild(bannerDiv);
+					}
+				}
 			}
 		}
 	}

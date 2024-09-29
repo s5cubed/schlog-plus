@@ -59,7 +59,7 @@ var settings = {
         "value":true,
         "description": "Fix widescreen videos becoming portrait?",
     },
-    "Profile music":"Configure profile music. To add profile music, go to your about section and add [MUSIC]music_url_here[/MUSIC] on a newline.",
+    "Profile music":"Configure profile music. To add profile music, go to your account preferences page.",
     "enable_profile_music": {
         "type":"toggle",
         "value":true,
@@ -69,6 +69,11 @@ var settings = {
         "type":"toggle",
         "value":false,
         "description": "Allow profile music to automatically play when someone has it.",
+    },
+	"profile_music_pause_offtab": {
+        "type":"toggle",
+        "value":true,
+        "description": "Allow profile music to automatically pause when you switch tabs.",
     },
     "profile_music_loop": {
         "type":"toggle",
@@ -276,7 +281,7 @@ function renderSettings() {
 		}
 		
 		mainsettings.appendChild(document.createElement("br"))
-		console.log(currentKey + " and " + currentKeyValue);
+		//console.log(currentKey + " and " + currentKeyValue);
     // more statements
 	}
 	
