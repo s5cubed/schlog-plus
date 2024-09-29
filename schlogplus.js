@@ -258,7 +258,7 @@ function changeElements(settings) {
 		if (effectElements[i] != undefined) {
 			if (settings.schlog_or_shlog.value != "Off") {
 				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0], settings.schlog_or_shlog.value.split(" ")[2]); 
-				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" 	")[2].toLowerCase()); 
+				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" ")[2].toLowerCase()); 
 				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
 			}
 			if (effectElements[i].innerHTML.includes(":rainbow:")) {
