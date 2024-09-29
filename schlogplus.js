@@ -26,9 +26,45 @@ function onError(error) {
 	console.log(`Error: ${error}`);
 }
 
+// This is for custom text animations, etc.
+function autoStyle() {
+var style = `
+.rainbow {
+	animation: colorRotate 6s linear 0s infinite;	
+}
+
+@keyframes colorRotate {
+  from {
+    color: #6666ff;
+  }
+  10% {
+    color: #0099ff;
+  }
+  50% {
+    color: #00ff00;
+  }
+  75% {
+    color: #ff3399;
+  }
+  100% {
+    color: #6666ff;
+  }
+}
+`
+var styleNode = document.createElement("style")
+styleNode.textContent = style
+document.head.appendChild(styleNode)
+}
+
+function setCharAt(str,index,chr) {
+    if(index > str.length-1) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
+}
+
 // Extension's main decision making block
 
 function getSettings(settings) {
+	autoStyle()
 	// Enable custom stylesheets
 	if (settings.custom_stylesheet.value != "") {
 		var style = document.createElement("style")
@@ -57,29 +93,45 @@ function getSettings(settings) {
 		}
 	}
 	
-	if (settings.schlog_or_shlog.value != "Off") { 
-		var effectElements = [document.getElementsByClassName("p-title-value")[0]]
-		for(var i=0; i < document.getElementsByTagName("div").length; i++ ) { 
-			if(document.getElementsByTagName("div")[i].hasAttribute("itemprop")) {
-				if (document.getElementsByTagName("div")[i].getAttribute("itemprop") == "text") {
-					effectElements.push((document.getElementsByTagName("div")[i]))
-				}
+	function autoGreentext() {
+		if (settings.toggle_auto_greentext.value == true) {
+			if (document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible").length > 0) {
+				var messageBox = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
+				document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0].addEventListener("keypress",function(e) {
+					//var messageBox = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
+					for (var i = 0; i < messageBox.childNodes.length; i++) {
+							if (i > 0 && (messageBox.childNodes[i - 1].textContent.startsWith(">") || messageBox.childNodes[i - 1].textContent.startsWith("<")) && 
+								!(messageBox.childNodes[i].textContent.startsWith(">") || messageBox.childNodes[i].textContent.startsWith("<") )
+							) {
+								messageBox.childNodes[i].style = "";
+							}
+							if (messageBox.childNodes[i].tagName == "P" && messageBox.childNodes[i].style.color == "") {
+								var checkval = messageBox.childNodes[i].textContent[0]
+								if (checkval == "") {
+									//console.log("Empty text for some reason")
+									checkval = messageBox.childNodes[i].textContent[1]
+								}
+								if (checkval == ">")
+								{
+									messageBox.childNodes[i].style = "color: rgb(65, 168, 95);"
+									//console.log("Valid configuration met, your text colour has changed.")
+								}
+								else if (checkval == "<") {
+									messageBox.childNodes[i].style = "color: rgb(251, 160, 38);"
+									//console.log("Valid configuration met, your text colour has changed.")
+								}
+							}
+					}
+				})
+			}
+			else {
+				console.log("Not working, ", document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible"))
 			}
 		}
-		
-		for(var i=0; i < document.getElementsByClassName("siropuShoutboxMessage").length; i++ ) { 
-			effectElements.push(document.getElementsByClassName("siropuShoutboxMessage")[i])
-		}
-
-		for (var i= 0; i < effectElements.length; i++) {
-            if (effectElements[i] != undefined) {
-                effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0], settings.schlog_or_shlog.value.split(" ")[2]); 
-                effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" ")[2].toLowerCase()); 
-                effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
-            }
-		}
-		
 	}
+	// Timeout to allow script to find messagebox
+	setTimeout(autoGreentext, 500)
+	
 	updateFunction(settings)
 	// When you click on new post or show new posts this will trigger.
 	document.body.addEventListener("mousedown", event=> {
@@ -176,6 +228,46 @@ function getSettings(settings) {
 	}
 }
 
+// This function checks for changes in messages for the word filter and other cool text stuff.
+function changeElements(settings) {
+	var effectElements = [document.getElementsByClassName("p-title-value")[0]]
+	//var thing = document.getElementsByClassName("message-content js-messageContent");
+	//for (var i = 0; i < thing.length; i++) {
+		//effectElements.push(thing[i])
+		//thing[i].innerHTML = thing[i].innerHTML.replace("schlog","shlog")
+	//}
+		
+	// This gets message text.
+	var conversationMessages = document.getElementsByClassName("message-userContent lbContainer js-lbContainer")
+	for (var i=0; i < conversationMessages.length; i++) {
+			effectElements.push(conversationMessages[i])
+	}
+	for(var i=0; i < document.getElementsByTagName("div").length; i++ ) { 
+		if(document.getElementsByTagName("div")[i].hasAttribute("itemprop")) {
+			if (document.getElementsByTagName("div")[i].getAttribute("itemprop") == "text") {
+				effectElements.push((document.getElementsByTagName("div")[i]))
+			}
+		}
+	}
+		
+	for(var i=0; i < document.getElementsByClassName("siropuShoutboxMessage").length; i++ ) { 
+		effectElements.push(document.getElementsByClassName("siropuShoutboxMessage")[i])
+	}
+
+	for (var i= 0; i < effectElements.length; i++) {
+		if (effectElements[i] != undefined) {
+			if (settings.schlog_or_shlog.value != "Off") {
+				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0], settings.schlog_or_shlog.value.split(" ")[2]); 
+				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" 	")[2].toLowerCase()); 
+				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
+			}
+			if (effectElements[i].innerHTML.includes(":rainbow:")) {
+				effectElements[i].className = "rainbow"
+			}
+		}
+	}
+}
+
 var isPlayerPaused = true
 
 document.addEventListener("visibilitychange", (event) => {
@@ -213,7 +305,7 @@ function updateFunction(settings) {
 						messageInner[i].style = "display:none;"
 				}
 			}
-			
+			changeElements(settings)
 			if (settings.toggle_custom_badges.value && messageInner[i] != undefined && messageInner[i].getElementsByClassName("userTitle message-userTitle").length > 0) {
 				if (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.includes("[#")) {
 					// This statement checks to make sure that people don't try to break the code by something of "[#[#[][[][#" etc.

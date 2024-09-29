@@ -10,12 +10,11 @@ textarea {
 
 #character {
     position: fixed;
-    float: left;
     z-index: -1;
     display: flex;
-    height: 100vh;
-    margin-top: -70em;
-    margin-left: -10px;
+    height: 70vh;
+    bottom: 0;
+    left: 0;
 }
 
 #updateLink {
@@ -27,8 +26,15 @@ textarea {
     margin-top: 10px;
 }
 
+.description {
+	line-height: 7px;
+}
+
 #main-settings {
     line-height: 7px;
+	p {
+		line-height:100%;
+	}
 }
 
 .box {
@@ -46,4 +52,5 @@ textarea {
     padding: 2px;
     color:white;
     text-align: center;
+	line-height: 100%;
 }

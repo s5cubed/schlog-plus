@@ -23,12 +23,18 @@ var settings = {
         "value":"",
         "description": "Import your custom theme here.",
     },
-    "User control":"Ignore guests and staff members.",
-	"toggle_show_stats": {
+	"Post options":"Customize how you post messages.",
+	"toggle_auto_greentext": {
         "type":"toggle",
         "value":true,
-        "description": "Show user stats without having to hover?",
+        "description": "Automatically input greentext and orangetext when using '>' and '<' ?",
     },
+    "User control":"Ignore guests and staff members.",
+//	"toggle_show_stats": {
+//        "type":"toggle",
+//        "value":false,
+//        "description": "Show user stats without having to hover?",
+//    },
     "toggle_ignore_guests": {
         "type":"toggle",
         "value":false,
@@ -152,7 +158,7 @@ function checkForUpdates(myVersion) {
 						updateLink.href = "https://github.com/sss5sss555s5s5s5/schlog-plus/releases/latest/download/schlog-plus.crx"
 				}
 				document.getElementById("main-topbox").appendChild(updateLink)
-				document.getElementById("main-topbox").appendChild(document.createElement("br"))
+				document.getElementById("main-topbox").appendChild(document.createElement("p"))
 			}
 		}
 	)
@@ -176,7 +182,10 @@ function restoreOptions() {
 			var currentValue = Object.values(currentKey);
 			if (currentKeyValue.constructor == Object) {
 				//console.log("Settings before: ", settings[currentKey])
-				settings[currentKey].value = currentKeyValue.value;
+				if (settings[currentKey] != undefined) {
+					settings[currentKey].value = currentKeyValue.value;
+				}
+				//settings[currentKey].value = currentKeyValue.value;
 				//console.log("Settings after: ", settings[currentKey])
 			}
 		}
@@ -205,6 +214,10 @@ function restoreOptions() {
 
 function renderSettings() {
 	document.getElementById("main-settings").innerHTML = ""
+	var bHeader = document.createElement("div")
+	bHeader.textContent = "Settings"
+	bHeader.className = "box-header"
+	document.getElementById("main-settings").appendChild(bHeader)
 	for (var i = 0; i < Object.keys(settings).length; i++) {
 		var mainsettings = document.getElementById("main-settings")
 		var currentKeyValue = settings[Object.keys(settings)[i]];
@@ -225,6 +238,7 @@ function renderSettings() {
 				case 'textline':
 					var description = document.createElement("element")
 					description.textContent = currentKeyValue.description
+					description.className = "description"
 					mainsettings.appendChild(description)
 					nodetoadd = document.createElement("input")
 					nodetoadd.id = currentKey
@@ -235,6 +249,7 @@ function renderSettings() {
                 case 'toggle':
 					var description = document.createElement("element")
 					description.textContent = currentKeyValue.description
+					description.className = "description"
 					mainsettings.appendChild(description)
 					nodetoadd = document.createElement("input")
 					nodetoadd.id = currentKey
@@ -248,6 +263,7 @@ function renderSettings() {
 					var valueLabel = document.createElement("element")
 					valueLabel.id = currentKey + "_value"
 					description.textContent = currentKeyValue.description + " Value: "
+					description.className = "description"
 					valueLabel.innerHTML = currentKeyValue.value
 					mainsettings.appendChild(description)
 					mainsettings.appendChild(valueLabel)
@@ -267,6 +283,7 @@ function renderSettings() {
                 case 'select':
 					var description = document.createElement("element")
 					description.textContent = currentKeyValue.description
+					description.className = "description"
 					mainsettings.appendChild(description)
 					nodetoadd = document.createElement("select")
 					nodetoadd.id = currentKey
