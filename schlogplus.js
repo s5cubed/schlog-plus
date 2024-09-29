@@ -109,7 +109,7 @@ function getSettings(settings) {
 			console.log("Variable: playerlocation = ", playerlocation)
 			var playerNode = document.createElement("audio")
 			playerNode.id = "profileMusicPlayer"
-			playerNode.volume = .5;
+			playerNode.volume = settings.profile_music_volume.value;
 			playerNode.controls = !settings.profile_music_hide_controls.value;
 			playerNode.style = "height: 30px;float: right;";
 			playerNode.autoplay = settings.profile_music_autoplay.value;
@@ -145,31 +145,34 @@ function getSettings(settings) {
 			}
 		}
 	}
-	
-	if (window.location.href.includes("account-details")) {
-		var musicInputField = document.createElement("input")
-		var buttonBar = document.getElementsByClassName("fr-toolbar fr-ltr fr-desktop fr-top fr-basic")[0]
-		var aboutMe = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
-		musicInputField.placeholder = "Music url..."
-		musicInputField.id = "musicInputField"
-		musicInputField.style = "max-height:30px;margin-top: 7px;"
-		buttonBar.insertBefore(musicInputField, buttonBar.childNodes[3])
-		musicInputField.addEventListener("keypress", function(event) {
-				if (event.key === "Enter") {
-					event.preventDefault();
-					if (musicInputField.value.includes("http")) {
-						//console.log("Enter pressed!")
-						var pElement = document.createElement("p")
-						var aElement = document.createElement("a")
-						aElement.href = musicInputField.value
-						aElement.target = "_blank"
-						aElement.textContent ="[Music]"
-						pElement.appendChild(aElement)
-						aboutMe.appendChild(pElement)
+	// Page takes a lil while to load so if we give it a delay it will eventually get in.
+	setTimeout(profileButtons, 300);
+	function profileButtons() { 
+		if (window.location.href.includes("account-details")) {
+			var musicInputField = document.createElement("input")
+			var buttonBar = document.getElementsByClassName("fr-toolbar fr-ltr fr-desktop fr-top fr-basic")[0]
+			var aboutMe = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
+			musicInputField.placeholder = "Music url..."
+			musicInputField.id = "musicInputField"
+			musicInputField.style = "max-height:30px;margin-top: 7px;"
+			buttonBar.insertBefore(musicInputField, buttonBar.childNodes[3])
+			musicInputField.addEventListener("keypress", function(event) {
+					if (event.key === "Enter") {
+						event.preventDefault();
+						if (musicInputField.value.includes("http")) {
+							//console.log("Enter pressed!")
+							var pElement = document.createElement("p")
+							var aElement = document.createElement("a")
+							aElement.href = musicInputField.value
+							aElement.target = "_blank"
+							aElement.textContent ="[Music]"
+							pElement.appendChild(aElement)
+							aboutMe.appendChild(pElement)
+						}
 					}
 				}
-			}
-		); 
+			); 
+		}
 	}
 }
 

@@ -24,6 +24,11 @@ var settings = {
         "description": "Import your custom theme here.",
     },
     "User control":"Ignore guests and staff members.",
+	"toggle_show_stats": {
+        "type":"toggle",
+        "value":true,
+        "description": "Show user stats without having to hover?",
+    },
     "toggle_ignore_guests": {
         "type":"toggle",
         "value":false,
@@ -106,6 +111,13 @@ var settings = {
         "description": "Auto word filter Schlog to Shlog, or Shlog to Schlog?",
     },
 }
+
+var browserType = "firefox"
+if (typeof browser === "undefined") {
+	var browser = chrome;
+	browserType = "chrome";
+}
+
 function readJson(path, callfunc) {
 	fetch(path).then(
 		(res) => {
@@ -133,7 +145,12 @@ function checkForUpdates(myVersion) {
 				var updateLink = document.createElement("a")
 				updateLink.id = "updateLink"
 				updateLink.textContent = "Click here to update"
-				updateLink.href = "https://github.com/sss5sss555s5s5s5/schlog-plus/archive/refs/heads/main.zip"
+				if (browserType == "firefox") {
+					updateLink.href = "https://github.com/sss5sss555s5s5s5/schlog-plus/releases/latest/download/schlog-plus.xpi"
+				}
+				else if (browserType == "chrome") {
+						updateLink.href = "https://github.com/sss5sss555s5s5s5/schlog-plus/releases/latest/download/schlog-plus.crx"
+				}
 				document.getElementById("main-topbox").appendChild(updateLink)
 				document.getElementById("main-topbox").appendChild(document.createElement("br"))
 			}
@@ -141,12 +158,6 @@ function checkForUpdates(myVersion) {
 	)
 }
 readJson("manifest.json", function(data) {checkForUpdates(data.version)})
-
-var browserType = "firefox"
-if (typeof browser === "undefined") {
-	var browser = chrome;
-	browserType = "chrome";
-}
 
 function isEmpty(obj) {
 	return Object.keys(obj).length === 0;
