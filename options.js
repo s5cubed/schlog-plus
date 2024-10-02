@@ -29,6 +29,11 @@ var settings = {
         "value":true,
         "description": "Automatically input greentext and orangetext when using '>' and '<' ?",
     },
+	"toggle_dislike_button": {
+        "type":"toggle",
+        "value":false,
+        "description": "Your default reaction becomes negative instead of positive.",
+    },
     "User control":"Ignore guests and staff members.",
 //	"toggle_show_stats": {
 //        "type":"toggle",
@@ -53,7 +58,7 @@ var settings = {
     },
     "react_grid_rows": {
         "type":"slider",
-        "value":8,
+        "value":6,
         "min": 1,
         "max":30,
         "step":1,

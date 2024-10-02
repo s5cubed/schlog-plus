@@ -9,6 +9,16 @@
 // This code is lcensed under the MIT License, please credit me in your forks.
 // ===========================================================================
 
+var tagSettings = {
+"rainbow":"<span class='rainbow'>INSERT_TEXT_HERE</span>",
+"rainbowtext":"<span class='rainbow'>INSERT_TEXT_HERE</span>",
+"glow":"<span style='text-shadow:0px 0px 40px #00fe20, 0px 0px 2px #00fe20;'>INSERT_TEXT_HERE</span>",
+"glowtext":"<span style='text-shadow:0px 0px 40px #00fe20, 0px 0px 2px #00fe20;'>INSERT_TEXT_HERE</span>",
+"sneed":"<span style='text-shadow:0px 0px 40px #fffb00, 0px 0px 2px #fffb00;'>INSERT_TEXT_HERE</span>",
+"sneedtext":"<span style='text-shadow:0px 0px 40px #fffb00, 0px 0px 2px #fffb00;'>INSERT_TEXT_HERE</span>",
+"spin":"<span class='rotate'>INSERT_TEXT_HERE</span>"
+}
+
 var profile_music_pause_offtab = true;
 var browserType = "firefox"
 if (typeof browser === "undefined") {
@@ -31,6 +41,21 @@ function autoStyle() {
 var style = `
 .rainbow {
 	animation: colorRotate 6s linear 0s infinite;	
+}
+
+.rotate {
+	animation: rotation 1s infinite linear;
+	display: inline-block;
+}
+
+@keyframes rotation { 
+	from {    
+		transform: rotateX(0deg); 
+		
+	}  
+	to {  
+		transform: rotateX(359deg);
+	}
 }
 
 @keyframes colorRotate {
@@ -76,7 +101,7 @@ function getSettings(settings) {
 	// If true, the reaction tooltip will become a grid.
 	if (settings.toggle_react_grid.value == true) {
 		var style = document.createElement("style")
-		style.textContent = ".reactTooltip {display: grid; grid-template-columns: repeat(" + settings.react_grid_rows.value + ", 40px [col-start])}"
+		style.textContent = ".reactTooltip {display: grid; grid-template-columns: repeat(" + settings.react_grid_rows.value + ", 40px [col-start]); max-width: 100%; flex-wrap: wrap; padding: 0; justify-content: center;}"
 		document.head.appendChild(style)
 	}
 	// If true, image squishing will be fixed.
@@ -100,24 +125,29 @@ function getSettings(settings) {
 				document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0].addEventListener("keypress",function(e) {
 					//var messageBox = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
 					for (var i = 0; i < messageBox.childNodes.length; i++) {
-							if (i > 0 && (messageBox.childNodes[i - 1].textContent.startsWith(">") || messageBox.childNodes[i - 1].textContent.startsWith("<")) && 
-								!(messageBox.childNodes[i].textContent.startsWith(">") || messageBox.childNodes[i].textContent.startsWith("<") )
+							if (i > 0 && (messageBox.childNodes[i - 1].textContent.startsWith(">")  || messageBox.childNodes[i - 1].textContent.startsWith("^") || messageBox.childNodes[i - 1].textContent.startsWith("<")) && 
+								!(messageBox.childNodes[i].textContent.startsWith(">") || messageBox.childNodes[i].textContent.startsWith(">") || messageBox.childNodes[i].textContent.startsWith("^") )
 							) {
 								messageBox.childNodes[i].style = "";
 							}
 							if (messageBox.childNodes[i].tagName == "P" && messageBox.childNodes[i].style.color == "") {
 								var checkval = messageBox.childNodes[i].textContent[0]
+								//console.log(checkval)
 								if (checkval == "") {
-									//console.log("Empty text for some reason")
+									//console.log("Empty text for some reason, 1: ", messageBox.childNodes[i].textContent[1], " 2: ", messageBox.childNodes[i].textContent[2])
 									checkval = messageBox.childNodes[i].textContent[1]
 								}
 								if (checkval == ">")
 								{
-									messageBox.childNodes[i].style = "color: rgb(65, 168, 95);"
+									messageBox.childNodes[i].style = "color: #789922;"
 									//console.log("Valid configuration met, your text colour has changed.")
 								}
 								else if (checkval == "<") {
-									messageBox.childNodes[i].style = "color: rgb(251, 160, 38);"
+									messageBox.childNodes[i].style = "color: #f6750b"
+									//console.log("Valid configuration met, your text colour has changed.")
+								}
+								else if (checkval == "^") {
+									messageBox.childNodes[i].style = "color: #6577E6"
 									//console.log("Valid configuration met, your text colour has changed.")
 								}
 							}
@@ -231,6 +261,9 @@ function getSettings(settings) {
 // This function checks for changes in messages for the word filter and other cool text stuff.
 function changeElements(settings) {
 	var effectElements = [document.getElementsByClassName("p-title-value")[0]]
+	//var rainbowregex = /\[rainbow\](\s?([A-Za-z]+\s?)+)\[\/rainbow\]/gi
+	var regex = /\[[^\]]*\](\s?([A-Za-z]+\s?)+)\[\/[A-Za-z]+\]/gi
+	var bracketregex = /\[[^\]]*\]/gi
 	//var thing = document.getElementsByClassName("message-content js-messageContent");
 	//for (var i = 0; i < thing.length; i++) {
 		//effectElements.push(thing[i])
@@ -261,12 +294,20 @@ function changeElements(settings) {
 				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" ")[2].toLowerCase()); 
 				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
 			}
-			if (effectElements[i].innerHTML.includes(":rainbow:")) {
-				effectElements[i].className = "rainbow"
+			var matches = effectElements[i].innerHTML.match(regex)
+			if (matches) {
+				for (m=0;m < matches.length;m++) {
+					var matchTagSettings = matches[m].match(bracketregex)[0].replace("[","").replace("]","")
+					var matchText = matches[m].replace(matches[m].match(bracketregex)[0],"").replace(matches[m].match(bracketregex)[1],"")
+					if (matchTagSettings.toLowerCase() in tagSettings) {
+						effectElements[i].innerHTML = effectElements[i].innerHTML.replace(matches[m],tagSettings[matchTagSettings.toLowerCase()].replace("INSERT_TEXT_HERE",matchText))
+					}
+				}
 			}
 		}
 	}
 }
+
 
 var isPlayerPaused = true
 
@@ -297,6 +338,16 @@ function updateFunction(settings) {
 				if (settings.toggle_ignore_guests.value && messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.includes("Guest")) {
 					messageInner[i].style = "display:none;"
 				}
+			}
+			
+			if (messageInner[i].getElementsByClassName("reaction-text js-reactionText").length > 0) {
+					if (settings.toggle_dislike_button.value) {
+						messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].textContent = "Dislike"
+						if (messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.getElementsByTagName("i").length > 0) {
+							messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.getElementsByTagName("i")[0].remove()
+						}
+						messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.href = messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.href.replace("reaction_id=1","reaction_id=50")
+					}
 			}
 			
 			// If a user's username is inside of the ignore list, their message gets hidden.
