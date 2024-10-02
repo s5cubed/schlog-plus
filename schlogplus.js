@@ -262,7 +262,8 @@ function getSettings(settings) {
 function changeElements(settings) {
 	var effectElements = [document.getElementsByClassName("p-title-value")[0]]
 	//var rainbowregex = /\[rainbow\](\s?([A-Za-z]+\s?)+)\[\/rainbow\]/gi
-	var regex = /\[[^\]]*\](\s?([A-Za-z]+\s?)+)\[\/[A-Za-z]+\]/gi
+	//var regex = /\[[^\]]*\](\s?([A-Za-z]+\s?)+)\[\/[A-Za-z]+\]/gi
+	var regex = /\[[^\]]*\](\s?(\S\s?)+)\[\/[A-Za-z]+\]/gi
 	var bracketregex = /\[[^\]]*\]/gi
 	//var thing = document.getElementsByClassName("message-content js-messageContent");
 	//for (var i = 0; i < thing.length; i++) {
