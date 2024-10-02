@@ -163,6 +163,7 @@ function checkForUpdates(myVersion) {
 						updateLink.href = "https://github.com/sss5sss555s5s5s5/schlog-plus/releases/latest/download/schlog-plus.crx"
 						var alertthing = document.createElement("p")
 						alertthing.textContent = "You appear to be using Chrome. Make sure that 'Handling of extension MIME type requests' is set to 'Always prompt for install' in chrome://flags/ otherwise the extension will not install."
+						document.getElementById("main-topbox").appendChild(alertthing)
 				}
 				document.getElementById("main-topbox").appendChild(updateLink)
 				document.getElementById("main-topbox").appendChild(document.createElement("p"))
