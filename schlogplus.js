@@ -175,7 +175,58 @@ function getSettings(settings) {
 	document.body.addEventListener("mousedown", event=> {
 		setTimeout(updateFunction, 1000, settings);
 	})
-  
+	function profileBanners() {
+		if (settings.toggle_custom_badges.value && window.location.href.includes("members")) {
+			var memberHeader = document.getElementsByClassName("memberHeader-content memberHeader-content--info")
+			var userTitle = document.getElementsByClassName("userTitle")
+			if (memberHeader.length > 0 && userTitle.length > 0) {
+				memberHeader = memberHeader[0]
+				if (memberHeader.getElementsByClassName("memberHeader-banners").length <= 0) {
+					var bannerdiv = document.createElement("div")
+					bannerdiv.className = "memberHeader-banners"
+					memberHeader.insertBefore(bannerdiv,memberHeader.getElementsByClassName("memberHeader-blurbContainer")[0])
+					var userName = memberHeader.getElementsByClassName("username ")[0]
+					var bracketregex = /\[#(?:[A-Fa-f0-9]{3}){1,2}\b\]/gi
+					var parenthesisRegex = /\(#(?:[A-Fa-f0-9]{3}){1,2}\b\)/gi
+					var matches = userTitle[0].textContent.match(bracketregex)
+					var schlogPlusUserImg = document.createElement("img")
+					var schlogPlusUserImgAdded = false
+					schlogPlusUserImg.src = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png"
+					schlogPlusUserImg.style = "width: 24px; margin-left:4px"
+					if (userTitle[0].textContent.match(parenthesisRegex)) {
+						userName.style = "color:" + userTitle[0].textContent.match(parenthesisRegex)[0].replace("(","").replace(")","") + ";"
+						userTitle[0].textContent = userTitle[0].textContent.replace(userTitle[0].textContent.match(parenthesisRegex)[0],"")
+						if(!schlogPlusUserImgAdded && settings.show_schlogplus_users.value)
+						{
+							userName.appendChild(schlogPlusUserImg)
+							schlogPlusUserImgAdded = true	
+						}
+					}
+					var badgeTexts = userTitle[0].textContent.split(bracketregex)
+					userTitle[0].textContent = badgeTexts[0]
+					if (matches != null) {
+						for (var t = 0; t < matches.length; t++) {
+							var bannerDiv = document.createElement("div")
+							var bannerStrong = document.createElement("strong")
+							var bannerColour = matches[t].replace("[","").replace("]","")
+							bannerStrong.textContent = badgeTexts[t + 1]
+							bannerDiv.className = "userBanner"
+							bannerDiv.style = "display:inline-block;text-shadow: 1px 1px black;color:white;border-color:black;margin-right:5px;background-color:" + bannerColour + ";"
+							bannerDiv.appendChild(bannerStrong)
+							bannerdiv.appendChild(bannerDiv);
+						}
+						if(!schlogPlusUserImgAdded && settings.show_schlogplus_users.value)
+						{
+							userName.appendChild(schlogPlusUserImg)
+							schlogPlusUserImgAdded = true	
+						}
+					}
+				}
+			}
+		}
+	}
+	setTimeout(profileBanners, 500)
+	
   // Enables profile music, checks on member pages only, makes sure you have an about section
 	if (settings.enable_profile_music.value == true && window.location.href.includes("members") && document.getElementById("about") ){
         console.log("Attempting to load music player")
