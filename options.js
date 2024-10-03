@@ -115,6 +115,11 @@ var settings = {
         "value":true,
         "description": "Toggle Custom Badges?",
     },
+	"show_schlogplus_users": {
+        "type":"toggle",
+        "value":true,
+        "description": "Show if someone is using Schlog+?",
+    },
     "schlog_or_shlog": {
         "type":"select",
         "value":"Off",

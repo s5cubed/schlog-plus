@@ -86,10 +86,16 @@ function setCharAt(str,index,chr) {
     return str.substring(0,index) + chr + str.substring(index+1);
 }
 
+// Lazy. Update when new settings are added, get rid of the old one.
+function newstufferroravoidance(settings) {
+	if (settings.show_schlogplus_users == undefined) {
+		settings.show_schlogplus_users = {"value":"true"}
+	}
+}
+
 // Extension's main decision making block
-
-
 function getSettings(settings) {
+	newstufferroravoidance(settings)
 	autoStyle()
 	
 	// Enable custom stylesheets
@@ -362,20 +368,43 @@ function updateFunction(settings) {
 				}
 			}
 			changeElements(settings)
-			if (settings.toggle_custom_badges.value && messageInner[i] != undefined && messageInner[i].getElementsByClassName("userTitle message-userTitle").length > 0) {
-				if (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.includes("[#")) {
-					// This statement checks to make sure that people don't try to break the code by something of "[#[#[][[][#" etc.
-					if ( (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.match(/]/g) || []).length == 1 && (messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.match(/#/g) || []).length == 1) {
-						var bannerText = messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("]")[1]
-						var bannerColour = "#" + messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("[#")[1].split("]")[0]
-						messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent = messageInner[i].getElementsByClassName("userTitle message-userTitle")[0].textContent.split("[#")[0]
+			var userTitle = messageInner[i].getElementsByClassName("userTitle message-userTitle")
+			var userName = messageInner[i].getElementsByClassName("message-name")
+			var schlogPlusUserImg = document.createElement("img")
+			var schlogPlusUserImgAdded = false
+			schlogPlusUserImg.src = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png"
+			schlogPlusUserImg.style = "width: 12px; margin-left:4px"
+			if (userName.length > 0) {userName = userName[0].getElementsByTagName("A")[0]}
+			if (settings.toggle_custom_badges.value && messageInner[i] != undefined && userTitle.length > 0) {
+				var bracketregex = /\[#(?:[A-Fa-f0-9]{3}){1,2}\b\]/gi
+				var parenthesisRegex = /\(#(?:[A-Fa-f0-9]{3}){1,2}\b\)/gi
+				var matches = userTitle[0].textContent.match(bracketregex)
+				if (userTitle[0].textContent.match(parenthesisRegex)) {
+					userName.style = "color:" + userTitle[0].textContent.match(parenthesisRegex)[0].replace("(","").replace(")","") + ";"
+					userTitle[0].textContent = userTitle[0].textContent.replace(userTitle[0].textContent.match(parenthesisRegex)[0],"")
+					if(!schlogPlusUserImgAdded && settings.show_schlogplus_users.value)
+					{
+						userName.appendChild(schlogPlusUserImg)
+						schlogPlusUserImgAdded = true	
+					}
+				}
+				var badgeTexts = userTitle[0].textContent.split(bracketregex)
+				userTitle[0].textContent = badgeTexts[0]
+				if (matches != null) {
+					for (var t = 0; t < matches.length; t++) {
 						var bannerDiv = document.createElement("div")
 						var bannerStrong = document.createElement("strong")
-						bannerStrong.textContent = bannerText
+						var bannerColour = matches[t].replace("[","").replace("]","")
+						bannerStrong.textContent = badgeTexts[t + 1]
 						bannerDiv.className = "userBanner"
-						bannerDiv.style = "display:block;color:white;background-color:" + bannerColour + ";"
+						bannerDiv.style = "display:block;text-shadow: 1px 1px black;color:white;margin-top:4px;background-color:" + bannerColour + ";"
 						bannerDiv.appendChild(bannerStrong)
 						messageInner[i].getElementsByClassName("message-userDetails")[0].appendChild(bannerDiv);
+					}
+					if(!schlogPlusUserImgAdded && settings.show_schlogplus_users.value)
+					{
+						userName.appendChild(schlogPlusUserImg)
+						schlogPlusUserImgAdded = true	
 					}
 				}
 			}
