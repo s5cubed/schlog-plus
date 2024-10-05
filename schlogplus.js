@@ -26,6 +26,22 @@ if (typeof browser === "undefined") {
 	browserType = "chrome";
 }
 
+function getCSS(path, callfunc) {
+	fetch(path).then(
+		(res) => {
+			if (!res.ok) {
+				throw new Error(`HTTP error! Status: ${res.status}`);
+			}
+			return res.text();
+		}
+		
+	).then(
+		(data) => callfunc(data)
+	).catch(
+		(error) =>console.error("Unable to fetch data:", error)
+	);
+}
+
 function getHTMLPage(input, callfunc) {
 fetch(input)
   .then(response => {
@@ -132,6 +148,17 @@ function newstufferroravoidance(settings) {
 function getSettings(settings) {
 	newstufferroravoidance(settings)
 	autoStyle()
+	
+	if (settings.theme != undefined) {
+		if (settings.theme.value != "None") {
+			var style = document.createElement("style")
+			var url = browser.runtime.getURL('css/' + settings.theme.value.toLowerCase() + '-main.css');
+			getCSS(url,function(css) {
+				style.textContent = css
+				document.head.appendChild(style)
+			})
+		}
+	}
 	
 	if (settings.schlog_plus_news.value) {
 			var newsDiv = document.createElement("div")

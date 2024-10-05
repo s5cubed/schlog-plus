@@ -14,6 +14,10 @@
         "scripts": ["background.js"]
     },
   
+  "web_accessible_resources": [
+    "css/*.css"
+	],
+
   "content_scripts": [
     {
       "matches": ["*://*.soyjak.blog/*"],

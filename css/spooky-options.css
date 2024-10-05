@@ -1,0 +1,66 @@
+body {
+    background: #260535;
+    text-align: center;
+    color: orange;
+}
+
+textarea {
+    max-width:90%;
+    background: black;
+	color: white;
+	border-color: orange;
+}
+
+#character {
+    position: fixed;
+    z-index: -1;
+    display: flex;
+    height: 70vh;
+    bottom: 0;
+    left: 0;
+	content: url("/images/autism-pumpkin.png")
+}
+
+input, select {
+	background:black;
+	color:orange;
+	border-color: orange;
+}
+
+#updateLink {
+    font-size: 30px;
+}
+
+#submit-button {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.description {
+	line-height: 7px;
+}
+
+#main-settings {
+    line-height: 7px;
+	p {
+		line-height:100%;
+	}
+}
+
+.box {
+    border-style: groove;
+    border-color: #3e338a;
+    color: orange;
+    background-color: black;
+    margin: auto;
+    width: 50%;
+    margin-top: 20px;
+}
+
+.box-header {
+    background-color: #3e338a;
+    padding: 2px;
+    color:white;
+    text-align: center;
+	line-height: 100%;
+}

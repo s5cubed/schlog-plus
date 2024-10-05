@@ -18,6 +18,12 @@
 
 var settings = {
     "Custom CSS":"Customize the entire website to your liking.",
+	"theme": {
+        "type":"select",
+        "value":"None",
+        "options":["None","Spooky"],
+        "description": "Select pre-defined themes.",
+    },
     "custom_stylesheet": {
         "type":"textarea",
         "value":"",
@@ -172,6 +178,23 @@ function readJson(path, callfunc) {
 	);
 }
 
+function getCSS(path, callfunc) {
+	fetch(path).then(
+		(res) => {
+			if (!res.ok) {
+				throw new Error(`HTTP error! Status: ${res.status}`);
+			}
+			return res.text();
+		}
+		
+	).then(
+		(data) => callfunc(data)
+	).catch(
+		(error) =>console.error("Unable to fetch data:", error)
+	);
+}
+
+
 function checkForUpdates(myVersion) {
 	readJson("https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/manifest.json", function(data) {
 			console.log("Github version: " + data.version)
@@ -224,10 +247,22 @@ function restoreOptions() {
 				//console.log("Settings after: ", settings[currentKey])
 			}
 		}
-	renderSettings();
-	//console.log(result);
+		renderSettings();
+		//console.log(result);
+		if (settings.theme != undefined) {
+			if (settings.theme.value != "None") {
+				var style = document.createElement("style")
+				var url = browser.runtime.getURL('css/' + settings.theme.value.toLowerCase() + '-options.css');
+				getCSS(url,function(css) {
+					style.textContent = css
+					document.head.appendChild(style)
+				})
+			}
+		}
 	}
 
+	
+	
 	function onError(error) {
 		console.log(`Error: ${error}`);
 		renderSettings();
