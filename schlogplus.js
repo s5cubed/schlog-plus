@@ -26,6 +26,25 @@ if (typeof browser === "undefined") {
 	browserType = "chrome";
 }
 
+function getHTMLPage(input, callfunc) {
+fetch(input)
+  .then(response => {
+    // When the page is loaded convert it to text
+    return response.text()
+  })
+  .then(html => {
+    // Initialize the DOM parser
+    const parser = new DOMParser()
+
+    // Parse the text
+    const doc = parser.parseFromString(html, "text/html")
+	callfunc(doc)
+  })
+  .catch(error => {
+     console.error('Failed to fetch page: ', error)
+  })
+}
+
 function isEmpty(obj) {
 	return Object.keys(obj).length === 0;
 }
@@ -39,6 +58,13 @@ function onError(error) {
 // This is for custom text animations, etc.
 function autoStyle() {
 var style = `
+#schlogPlusShoutbox {
+	width: auto;
+	position: fixed;
+	scale: 0.9;
+	display: flex;
+	z-index: 100;
+}
 .rainbow {
 	animation: colorRotate 6s linear 0s infinite;	
 }
@@ -88,8 +114,17 @@ function setCharAt(str,index,chr) {
 
 // Lazy. Update when new settings are added, get rid of the old one.
 function newstufferroravoidance(settings) {
-	if (settings.show_schlogplus_users == undefined) {
-		settings.show_schlogplus_users = {"value":"true"}
+	var defaultvalues = {
+		"show_schlogplus_users":"true",
+		"schlog_plus_news":"true",
+		"toggle_custom_backgrounds":"true",
+		"shoutbox_position":"Bottom Right",
+		"toggle_shoutbox_anywhere":"false"
+	}
+	for (i in defaultvalues) {
+		if (settings[i] == undefined) {
+			settings[i] = {"value":defaultvalues[i]}
+		}
 	}
 }
 
@@ -98,6 +133,13 @@ function getSettings(settings) {
 	newstufferroravoidance(settings)
 	autoStyle()
 	
+	if (settings.schlog_plus_news.value) {
+			var newsDiv = document.createElement("div")
+			newsText = "Schlog+ News: This is a test!"
+			newsDiv.innerHTML = "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>" + newsText
+			newsDiv.style = "text-align: center;"
+			document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
+	}
 	// Enable custom stylesheets
 	if (settings.custom_stylesheet.value != "") {
 		var style = document.createElement("style")
@@ -163,7 +205,7 @@ function getSettings(settings) {
 				})
 			}
 			else {
-				console.log("Not working, ", document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible"))
+				console.log("Greentext Not working, ", document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible"))
 			}
 		}
 	}
@@ -225,97 +267,142 @@ function getSettings(settings) {
 			}
 		}
 	}
-	setTimeout(profileBanners, 500)
+	setTimeout(profileBanners, 5)
 	
-  // Enables profile music, checks on member pages only, makes sure you have an about section
-	if (settings.enable_profile_music.value == true && window.location.href.includes("members") && document.getElementById("about") ){
-        console.log("Attempting to load music player")
+	// Profile Data Requests. Must be a member page and not an about page
+	if (window.location.href.includes("members") && !window.location.href.includes("/about")) {
+		
 		var waitdiv = document.createElement("div")
-		waitdiv.textContent = "Loading music player..."
-		waitdiv.style = "float:right;"
-		document.getElementsByClassName("memberHeader-buttons")[0].appendChild(waitdiv);
-		// Extension clicks on your about section to force the site to load your about content and get any code strings you might have in there
-        console.log("Clicking on about page")
-		document.getElementById("about").click(); 
-		// After 300 ms, it goes back to your main profile page and creates the music player 3 seconds later. The wait time is to let the about elements load
-        console.log("Attempting to load music player")
-		setTimeout(document.getElementsByClassName("tabs-tab")[0].click(), 300)
-		setTimeout(startMusicPlayer, 3000);
-		function startMusicPlayer() {
-            console.log("Attempting to spawn music player.")
-			var aboutText = document.getElementsByClassName("tabPanes js-memberTabPanes")[0].children[3].getElementsByClassName("bbWrapper")[0].childNodes
-			console.log("Variable: aboutText = ", aboutText)
-			// Injects into your buttons section on your profile
-			var playerlocation = document.getElementsByClassName("memberHeader-buttons")[0]
-			console.log("Variable: playerlocation = ", playerlocation)
-			var playerNode = document.createElement("audio")
-			playerNode.id = "profileMusicPlayer"
-			playerNode.volume = settings.profile_music_volume.value;
-			playerNode.controls = !settings.profile_music_hide_controls.value;
-			playerNode.style = "height: 30px;float: right;";
-			playerNode.autoplay = settings.profile_music_autoplay.value;
-			playerNode.loop = settings.profile_music_loop.value;
-			var playerSource = document.createElement("source");
-			//console.log("Page is applicable for music");
-			waitdiv.remove();
-			for (var i = 0; i < aboutText.length; i++) {
-				if (aboutText[i].constructor == Text && aboutText[i].data.includes("[MUSIC]") && aboutText[i].data.includes("[/MUSIC]")) {
-					var musicUrl = aboutText[i].data.replace("[MUSIC]","").replace("\n","").replace("[/MUSIC]","")
-                    console.log("This is the URL the player is attempting to load: " + musicUrl)
-					if (musicUrl.startsWith("http")) {
-						playerSource.src = musicUrl;
-						playerNode.appendChild(playerSource);
-						playerlocation.appendChild(playerNode);
-						if (settings.profile_music_autoplay.value) {playerNode.play()}
-					}
+		if (settings.enable_profile_music.value) {
+			console.log("Attempting to load music player")
+			waitdiv.textContent = "Loading music player..."
+			waitdiv.style = "float:right;"
+			document.getElementsByClassName("memberHeader-buttons")[0].appendChild(waitdiv);
+		}
+		var proflocation = window.location.href + "about"
+		if (window.location.href.split("/")[5] != "") {proflocation = window.location.href.replace(window.location.href.split("/")[5],"about")}
+		getHTMLPage(proflocation,function(doc) {
+				console.log("Profile data (music, background, etc) function running")
+				var aboutText = doc.getElementsByClassName("bbWrapper")[0].childNodes
+				var playerNode = document.createElement("audio")
+				var playerSource = document.createElement("source");
+				var playerlocation = document.getElementsByClassName("memberHeader-buttons")[0]
+				var musicUrl = ""
+				var bgUrl = ""
+				
+				var bg = document.createElement("style")
+				var bgMore = ".p-breadcrumbs {text-shadow: 4px 4px black;}"
+				
+				if (settings.enable_profile_music.value) {
+					playerNode.id = "profileMusicPlayer"
+					playerNode.volume = settings.profile_music_volume.value;
+					playerNode.controls = !settings.profile_music_hide_controls.value;
+					playerNode.style = "height: 30px;float: right;";
+					playerNode.autoplay = settings.profile_music_autoplay.value;
+					playerNode.loop = settings.profile_music_loop.value;
+					waitdiv.remove();
+					
 				}
-				else {
+				for (var i = 0; i < aboutText.length; i++) {
 					if (aboutText[i].tagName == "A") {
-						var musicUrl = ""
-						if (aboutText[i].textContent.toLowerCase() == "[music]") {
+						if (aboutText[i].textContent.toLowerCase() == "[music]" && settings.enable_profile_music.value) {
 							musicUrl = aboutText[i].href
 						}
-						if (musicUrl.startsWith("http")) {
-							playerSource.src = musicUrl;
-							playerNode.appendChild(playerSource);
-							playerNode.autoplay = settings.profile_music_autoplay.value; // Double check
-							playerlocation.appendChild(playerNode);
+						if (aboutText[i].textContent.toLowerCase() == "[background]" && settings.toggle_custom_backgrounds.value) {
+							bgUrl = aboutText[i].href
 						}
 					}
-                }
+					else if (aboutText[i].constructor == Text && aboutText[i].data.toLowerCase().includes("[music]") && aboutText[i].data.toLowerCase().includes("[/music]")) {
+						musicUrl = aboutText[i].data.replace("[MUSIC]","").replace("\n","").replace("[/MUSIC]","").replace("[music]","").replace("[/music]","")
+					}
+					else if (aboutText[i].constructor == Text && aboutText[i].data.toLowerCase().includes("[bg]") && aboutText[i].data.toLowerCase().includes("[/bg]")) {
+						bgUrl = aboutText[i].data.replace("[BG]","").replace("\n","").replace("[/BG]","").replace("[bg]","").replace("[/bg]","")
+					}
+				}
+				if (musicUrl.startsWith("http") && settings.enable_profile_music.value) {
+					playerSource.src = musicUrl;
+					playerNode.appendChild(playerSource);
+					playerNode.autoplay = settings.profile_music_autoplay.value; // Double check
+					playerlocation.appendChild(playerNode);
+				}
+				if (bgUrl.startsWith("http") && settings.toggle_custom_backgrounds.value) {
+					bg.textContent = ".p-body {background: url('" + bgUrl + "'); background-size: 100%; background-attachment: fixed;} " + bgMore
+					document.head.appendChild(bg)	
+				}
 			}
-		}
+		)
 	}
-	// Page takes a lil while to load so if we give it a delay it will eventually get in.
+	
+	// Page takes a lil while to load so if we gi ve it a delay it will eventually get in.
 	setTimeout(profileButtons, 300);
 	function profileButtons() { 
+		var features = ["Music","Background"]
 		if (window.location.href.includes("account-details")) {
-			var musicInputField = document.createElement("input")
-			var buttonBar = document.getElementsByClassName("fr-toolbar fr-ltr fr-desktop fr-top fr-basic")[0]
+			var schlogPlusLabel = document.createElement("label")
+			var schlogPlusDiv = document.createElement("div")
+			schlogPlusDiv.style = "margin-bottom: 20px;"
+			schlogPlusLabel.textContent = "Schlog+ Features: "
+			var buttonBar = document.getElementsByClassName("fr-box bbWrapper fr-ltr fr-basic fr-top")[0]
 			var aboutMe = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
-			musicInputField.placeholder = "Music url..."
-			musicInputField.id = "musicInputField"
-			musicInputField.style = "max-height:30px;margin-top: 7px;"
-			buttonBar.insertBefore(musicInputField, buttonBar.childNodes[3])
-			musicInputField.addEventListener("keypress", function(event) {
+			schlogPlusDiv.appendChild(schlogPlusLabel)
+			for (feature=0;feature < features.length; feature++) {
+				var InputField = document.createElement("input")
+				InputField.placeholder = features[feature] + " url..."
+				InputField.id = features[feature] + "InputField"
+				InputField.style = "max-height:30px;margin-top: 7px;margin-left:5px"
+				schlogPlusDiv.appendChild(InputField)
+				InputField.addEventListener("keypress", function(event) {
 					if (event.key === "Enter") {
 						event.preventDefault();
-						if (musicInputField.value.includes("http")) {
-							//console.log("Enter pressed!")
+						if (InputField.value.includes("http")) {
 							var pElement = document.createElement("p")
 							var aElement = document.createElement("a")
-							aElement.href = musicInputField.value
+							aElement.href = InputField.value
 							aElement.target = "_blank"
-							aElement.textContent ="[Music]"
+							aElement.textContent = "[" + InputField.placeholder.split(" ")[0] + "]"
 							pElement.appendChild(aElement)
 							aboutMe.appendChild(pElement)
+							InputField.value = ""
 						}
 					}
 				}
 			); 
+			}
+			buttonBar.parentElement.insertBefore(schlogPlusDiv, buttonBar.parentElement.childNodes[7])
+		}
+	}
+	
+	if (settings.toggle_shoutbox_anywhere.value) {
+		var shoutbox = document.createElement("object")
+		var shoutboxStyle = document.createElement("style")
+		shoutboxStyle.textContent = "#schlogPlusShoutbox { " + settings.shoutbox_position.value.toLowerCase().split(" ")[0] + ": 0; " + settings.shoutbox_position.value.toLowerCase().split(" ")[1] + ": 0; }"
+		document.head.appendChild(shoutboxStyle)
+		shoutbox.id = "schlogPlusShoutbox"
+		shoutbox.type = "text/html"
+		shoutbox.data = "https://soyjak.blog/index.php?shoutbox/"
+		shoutbox.height = "470px"
+		document.body.append(shoutbox)
+		shoutbox.onload = function() {
+			var rsnode = document.createElement("style")
+			const resizeObserver = new ResizeObserver(entries => 
+				{
+					//console.log('Body height changed:', entries[0].target.clientHeight);
+					shoutbox.height = 80 + entries[0].target.clientHeight 
+				}
+			)
+			rsnode.textContent = `
+			.p-navSticky, .p-breadcrumbs, footer {
+					display: none;
+			}
+			`
+			shoutbox.contentDocument.documentElement.style = "overflow: hidden;"
+			console.log("Loaded " + shoutbox.contentDocument)
+			shoutbox.contentDocument.head.appendChild(rsnode)
+			resizeObserver.observe(shoutbox.contentDocument.getElementsByClassName("block-body")[0])
 		}
 	}
 }
+
 
 // This function checks for changes in messages for the word filter and other cool text stuff.
 function changeElements(settings) {

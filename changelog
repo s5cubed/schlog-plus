@@ -1,0 +1,4 @@
+- Added profile backgrounds
+- Repositioned Schlog+ buttons in the Account Details page
+- Profile now uses fetch() to get data faster.
+- Added the Shoutbox anywhere! You can use it... anywhere!

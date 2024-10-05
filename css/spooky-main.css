@@ -1,0 +1,460 @@
+@import url('https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap');
+
+.p-pageWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #492079;
+  background-image: url("https://images.gamebanana.com/img/ss/mods/59f4959b0e0a6.jpg");
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+.block-footer {
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #505050;
+  background: #e5e8f7;
+  border-top: none;
+  background: black;
+}
+
+body, a{
+  color: orange;
+}
+
+.p-sectionLinks {
+  font-size: 13px;
+  color: orange;
+  background: #370644;
+  border-bottom: 1px solid black;
+}
+
+.p-header, .p-nav, .p-nav-list .p-navEl {
+  color: orange;
+  background: #370644; url("data/assets/style_properties/logotbh.png");
+}
+
+.p-navgroup {
+  float: left;
+  background: rgba(20,20,20,0.5);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.p-footer, .p-footer a{
+  font-size: 13px;
+  color: orange;
+  background: #22032b;
+}
+
+.block-container {
+  color: orange;
+  background: #220f35;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: orange;
+  border-right-color: orange;
+  border-bottom-color: orange;
+  border-left-color: orange;
+  border-radius: 4px;
+}
+
+.block-header {
+  padding: 6px 10px;
+  margin: 0;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 20px;
+  color: orange;
+  border-bottom: orange;
+  background: linear-gradient(0deg, #9545c2, #340d4f);
+}
+
+.node + .node, .node-body, .menu-row.menu-row--separated + .menu-row {
+  border-top: none;
+  &:hover {
+    background-color: black;
+  }
+}
+.block-header .block-desc {
+  color: orange;
+  font-weight: bold;
+}
+
+.menu-header {
+  padding: 6px 15px;
+  margin: 0;
+  font-weight: 400;
+  text-decoration: none;
+  font-size: 17px;
+  color: orange;
+  border-bottom: orange;
+  background: linear-gradient(0deg, #3f0659, #c41cb9);
+}
+
+.menu-content {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  font-size: 13px;
+  color: yellow;
+  background: #370644;
+  border-radius: 3px;
+    border-top-right-radius: 3px;
+  border-top: 3px solid #06141e;
+}
+
+.alert.is-unread {
+  color: yellow;
+  background: #8d40b8;
+  &:hover {
+    background:black;
+  }
+}
+
+.menu-row:hover {
+  background:black;
+}
+
+.menu-footer {
+  padding: 6px 15px;
+  font-size: 12px;
+  color: #505050;
+  background: #e5e8f7;
+  border-top: none;
+  background: black;
+}
+
+.p-nav-list .p-navEl.is-selected {
+  color: #370644;
+  font-weight: 700;
+  background: #eebb5a;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.menu-linkRow {
+  display: block;
+  padding: 6px 15px 6px 12px;
+  border-left: 3px solid transparent;
+  color: orange;
+  text-decoration: none;
+}
+
+.block-minorHeader {
+  padding: 6px 10px;
+  margin: 0;
+  font-weight: 400;
+  text-decoration: none;
+  font-size: 17px;
+  color: orange;
+}
+
+.contentRow-fader {
+  position: absolute;
+  top: 87px;
+  left: 0;
+  right: 0;
+  height: 75px;
+  background: transparent;
+  background: linear-gradient(to bottom, rgba(214,218,240,0) 0%, #1d0124 80%);
+}
+
+.block--messages .message, .block--messages .block-row {
+  color: orange;
+  background: #02051578;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: #000;
+  border-right-color: #000;
+  border-bottom-color: #000;
+  border-left-color: #000;
+  border-radius: 4px;
+}
+
+.message-cell.message-cell--user, .message-cell.message-cell--action {
+  position: relative;
+  background: #00000036;
+  border-right: none;
+  min-width: 0;
+}
+
+.message-userArrow {
+  position: absolute;
+  top: 20px;
+  right: -1px;
+  border: 10px solid transparent;
+    border-left-width: 10px;
+  border-left-width: 0;
+  border-right-color: none;
+  display: none;
+}
+
+.bbCodeBlock {
+  display: flow-root;
+  margin: .5em 0;
+    margin-top: 0.5em;
+  background: #27093c;
+  border: 1px solid orange;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: orange;
+  border-left: 3px solid #f2930d;
+  color: orange;
+}
+
+.reactionsBar {
+  display: none;
+  opacity: 0;
+  -webkit-transition: all .25s ease, -xf-opacity .25s ease;
+  transition: all .25s ease, -xf-opacity .25s ease;
+    transition-property: all, -xf-opacity;
+  overflow-y: hidden;
+  height: 0;
+  -webkit-transition-property: all,-xf-height;
+  transition-property: all,-xf-height;
+  background: #27093c;
+  border: 1px solid orange;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: orange;
+  border-left: 2px solid orange;
+  padding: 6px;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.bbCodeBlock-title {
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #f2930d;
+  background: #040107;
+}
+
+.message-attribution {
+  color: #8c8c8c;
+  font-size: 12px;
+  padding-bottom: 3px;
+  border-bottom: none;
+}
+
+.message-signature {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #8c8c8c;
+  border-top: 1px solid orange;
+  padding-top: 3px;
+}
+
+.fr-box.fr-basic {
+  background: #22032b;
+    background-clip: border-box;
+  border: none;
+  border-color: var(--input-border-heavy) var(--input-border-light) var(--input-border-light) var(--input-border-heavy);
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  color: orange;
+}
+
+.fr-toolbar .fr-command.fr-btn, .fr-popup .fr-command.fr-btn, .fr-modal .fr-command.fr-btn {
+  background: transparent;
+    background-clip: border-box;
+  color: orange;
+  -moz-outline: 0;
+  outline: none;
+  border: 0;
+  line-height: 1;
+  cursor: pointer;
+  text-align: left;
+  margin: 2px 1px;
+  padding: 0;
+  -webkit-transition: all .25s;
+  -moz-transition: all .25s;
+  -ms-transition: all .25s;
+  -o-transition: all .25s;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  z-index: 2;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
+  user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  float: left;
+  height: 32px;
+  border-color:none;
+}
+
+.fr-toolbar .fr-btn-grp, fr-btn-grp.rte-tab--preview {
+ border-color: none; 
+  border: none;
+}
+
+.block-tabHeader {
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+  font-size: 15px;
+  color: orange;
+  background: #2a052d82;
+  border-bottom: 1px solid #fff;
+  font-size: 0;
+}
+
+.input {
+  font-size: 15px;
+  color: #141414;
+  background: #000;
+  border: none;
+    border-right-color: currentcolor;
+    border-bottom-color: currentcolor;
+    border-left-color: currentcolor;
+  border-top-color: none;
+  border-right-color: none;
+  border-bottom-color: none;
+  border-left-color: none;
+  border-radius: 4px;
+  padding: 6px;
+  display: block;
+  width: 100%;
+  line-height: 1.4;
+  text-align: left;
+  word-wrap: break-word;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-transition: all .25s ease;
+  transition: all .25s ease;
+}
+
+.message-responseRow {
+  margin-top: -1px;
+  background: #1c012ba8;
+  border: none;
+  padding: 6px;
+}
+
+.avatar img {
+  background-color: transparent;
+}
+
+.memberHeader-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: #000;
+    background-position-x: 0%;
+    background-position-y: 0%;
+    background-repeat: repeat;
+    background-image: none;
+    background-size: auto;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+}
+
+.memberHeader-separator {
+  margin: 10px 0;
+  border: none;
+    border-top-width: medium;
+    border-top-style: none;
+    border-top-color: currentcolor;
+  border-top: none;
+}
+
+.pageNav-page.pageNav-page--current {
+  background: #000;
+  color: #aa6709;
+  border: 1px solid #f9c479;
+  cursor: pointer;
+}
+
+.pageNav-page {
+  display: table-cell;
+  background: black;
+  color: orange;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: #f7f7f7;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+  border-left-color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+  border: none;
+    border-right-width: medium;
+    border-right-style: none;
+    border-right-color: currentcolor;
+    border-left-width: medium;
+    border-left-style: none;
+    border-left-color: currentcolor;
+}
+
+.pageNav-jump {
+  display: inline-block;
+  background: linear-gradient(0deg, #fff, #e0e3f4);
+  color: #800000;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: #f7f7f7;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+  border-left-color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+  border-radius: 2px;
+  padding: 5px 8px;
+  border: none;
+  background: black;
+  color: orange;
+}
+
+.button.button--link, a.button.button--link {
+  background: black;
+  color: orange;
+  border-color: orange;
+}
+
+.structItem {
+  display: table;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  &:hover {
+    background:black;
+  }
+}
+
+.block-filterBar {
+  padding: 6px 10px;
+  font-size: 13px;
+  color: orange;
+  background: #fff;
+  border-bottom: none;
+  background: linear-gradient(0deg, #fff, #ebedf8);
+  background: black;
+}
+
+.block-filterBar .filterBar-filterToggle {
+  background: black;
+}

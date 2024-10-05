@@ -34,6 +34,18 @@ var settings = {
         "value":false,
         "description": "Your default reaction becomes negative instead of positive.",
     },
+	"Feature Control":"Configure site features to your liking",
+	"toggle_shoutbox_anywhere": {
+        "type":"toggle",
+        "value":false,
+        "description": "Enable the shoutbox anywhere?",
+    },
+	"shoutbox_position": {
+        "type":"select",
+        "value":"Bottom Right",
+        "options":["Bottom Right","Bottom Left","Top Right","Top Left"],
+        "description": "Change the shoutbox position when using it anywhere.",
+    },
     "User control":"Ignore guests and staff members.",
 //	"toggle_show_stats": {
 //        "type":"toggle",
@@ -114,6 +126,16 @@ var settings = {
         "type":"toggle",
         "value":true,
         "description": "Toggle Custom Badges?",
+    },
+	"toggle_custom_backgrounds": {
+        "type":"toggle",
+        "value":true,
+        "description": "Toggle Custom Profile Backgrounds?",
+    },
+	"schlog_plus_news": {
+        "type":"toggle",
+        "value":true,
+        "description": "Toggle Schlog+ News?",
     },
 	"show_schlogplus_users": {
         "type":"toggle",
