@@ -18,13 +18,15 @@ Schlog+ is a browser extension for soyjak.blog created by Soygoy, a.k.a "s."
 The extension is designed to fix issues with the website and add features that developers can't add or are incompetent to even attempt to do so. Think 4chanX for example.
 ## Features
 - Profile music
-- Custom user badges
-- Custom CSS
+- Custom user badges, backgrounds and username colours
+- Custom CSS and themes
 - Fixes for image and video sizes
 - Ignorable guests and staff
 - Word filter that converts Schlog to Shlog or Shlog to Schlog
+- Shoutbox that you can use anywhere
+- Change features of the site to your liking
 ## Why use Schlog+?
-You can set custom profile music and people with the extension will be able to hear it when they access your profile. You can also give yourself a custom badge which anyone with the extension can see. Besides all the fun stuff, it's in my best intention to make the site a joy to use by adding fixes and quality of life features that the site developers can't or won't add.
+You can set custom profile music and people with the extension will be able to hear it when they access your profile. You can also give yourself a custom badge which anyone with the extension can see. And you can even give yourself a custom background and anyone who uses the extension can in fact, see it. Besides all the fun stuff, it's in my best intention to make the site a joy to use by adding fixes and quality of life features that the site developers can't or won't add.
 
 # Documentation
 You can find all relevant documentation in the <a href="https://github.com/sss5sss555s5s5s5/schlog-plus/wiki">Wiki.</a>
