@@ -138,11 +138,11 @@ var settings = {
         "value":true,
         "description": "Toggle Custom Profile Backgrounds?",
     },
-	"schlog_plus_news": {
-        "type":"toggle",
-        "value":true,
-        "description": "Toggle Schlog+ News?",
-    },
+//	"schlog_plus_news": {
+//        "type":"toggle",
+//        "value":true,
+//        "description": "Toggle Schlog+ News?",
+//    },
 	"show_schlogplus_users": {
         "type":"toggle",
         "value":true,

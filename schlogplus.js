@@ -159,14 +159,14 @@ function getSettings(settings) {
 			})
 		}
 	}
-	
-	if (settings.schlog_plus_news.value) {
-			var newsDiv = document.createElement("div")
-			newsText = "Schlog+ News: This is a test!"
-			newsDiv.innerHTML = "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>" + newsText
-			newsDiv.style = "text-align: center;"
-			document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
-	}
+// Planned but not fully implemented.	
+//	if (settings.schlog_plus_news.value) {
+//			var newsDiv = document.createElement("div")
+//			newsText = "Schlog+ News: This is a test!"
+//			newsDiv.innerHTML = "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>" + newsText
+//			newsDiv.style = "text-align: center;"
+//			document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
+//	}
 	// Enable custom stylesheets
 	if (settings.custom_stylesheet.value != "") {
 		var style = document.createElement("style")

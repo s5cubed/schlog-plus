@@ -2,3 +2,4 @@
 - Repositioned Schlog+ buttons in the Account Details page
 - Profile now uses fetch() to get data faster.
 - Added the Shoutbox anywhere! You can use it... anywhere!
+- Added the Spooky Theme, still a WIP will be updated in 1.5.1. But using the spooky theme, you can now contribute your own themes based off of the theme as an example.
