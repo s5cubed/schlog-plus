@@ -1,7 +1,9 @@
 body {
-    background: #260535;
+    background: url("https://wiki.teamfortress.com/w/images/thumb/0/02/Koth_harvest_event_mid.png/600px-Koth_harvest_event_mid.png");
     text-align: center;
     color: orange;
+    background-attachment: fixed;
+    background-size: 100%;
 }
 
 textarea {
@@ -49,16 +51,16 @@ input, select {
 
 .box {
     border-style: groove;
-    border-color: #3e338a;
+    border-color: #3e338a5e;
     color: orange;
-    background-color: black;
+    background-color: #00000054;
     margin: auto;
     width: 50%;
     margin-top: 20px;
 }
 
 .box-header {
-    background-color: #3e338a;
+    background-color: #3e338a75;
     padding: 2px;
     color:white;
     text-align: center;
