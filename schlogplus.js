@@ -184,14 +184,14 @@ function getSettings(settings) {
 	// If true, image squishing will be fixed.
 	if (settings.image_squish_fix.value == true) {
 		var style = document.createElement("style")
-		style.textContent = ".bbImage {width: auto;}"
+		style.textContent = ".bbImage, .message-signature img {width: auto; max-width: 300px; max-height: 300px; display: inline;}"
 		document.head.appendChild(style)
 	}
 	// If true, widescreen_videos will no longer become portrait.
 	if (settings.widescreen_video.value == true) {
 		var style = document.createElement("style")
 		for (var i = 0; i < document.getElementsByTagName("video").length; i++) {
-		document.getElementsByTagName("video")[i].style = "max-width:600px;max-height:300px;"
+		document.getElementsByTagName("video")[i].style = "max-width:600px;max-height:300px; width: auto; height: auto;"
 		}
 	}
 	

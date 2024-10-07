@@ -5,6 +5,83 @@
   color: orange;
 }
 
+.menu-header {
+  border-bottom:1px black;
+}
+
+.fr-view blockquote[data-quote]::before {
+  display: block;
+  content: attr(data-quote) ":";
+  font-size: 13px;
+  color: #f2930d;
+  background: #250633;
+  padding: 6px 10px;
+  margin: -6px -10px 6px -10px;
+}
+
+.block-minorTabHeader {
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+  font-size: 15px;
+  color: #b12525;
+  background: #000104;
+  border-bottom: 1px solid #fff0;
+  font-size: 0;
+}
+
+.block-row.block-row--separated + .block-row {
+  border-top: 1px solid #6a4009;
+}
+
+.blockStatus {
+  color: #141414;
+  background: #000;
+  border-width: 1px;
+    border-left-width: 1px;
+  border-style: solid;
+    border-left-style: solid;
+  border-top-color: #020000;
+  border-right-color: #000;
+  border-bottom-color: #000;
+  border-left-color: #fff;
+  border-left: 3px solid #f2930d;
+  border-radius: 4px;
+  margin: 0;
+  padding: 6px 0;
+  font-size: 13px;
+  text-align: left;
+  color: orange;
+}
+
+.block-separator {
+  margin: 0;
+  padding: 0;
+  border: none;
+    border-top-width: medium;
+    border-top-style: none;
+    border-top-color: currentcolor;
+  border-top: 1px solid #f7f7f700;
+}
+
+
+.tabs--standalone {
+  padding: 0;
+  margin-bottom: 20px;
+  font-weight: 400;
+  border-width: 1px;
+  border-style: none;
+  border-top-color: none;
+  border-right-color: none;
+  border-bottom-color: none;
+  border-left-color: none;
+  font-size: 15px;
+  color: orange;
+  background: #000311;
+  font-size: 0;
+}
+
+
 .memberTooltip-separator {
   margin: -1px 6px 0;
   border: none;
@@ -52,6 +129,15 @@
   padding-bottom: 6px;
   padding-left: 10px;
   background: black;
+}
+
+.message-cell.message-cell--vote {
+  position: relative;
+  background: #00020b;
+  border-left: 1px solid #0d0000;
+  border-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .overlay {
@@ -311,11 +397,11 @@ body, a{
   list-style: none;
   text-align: left;
   font-size: 13px;
-  color: yellow;
-  background: #3706445e;
+  color: #d5a71b;
+  background: #0000005e;
   border-radius: 3px;
     border-top-right-radius: 3px;
-  border-top: 3px solid #06141e;
+  border-top: 3px solid #09000d;
 }
 
 .menu-content {
@@ -324,7 +410,7 @@ body, a{
   list-style: none;
   text-align: left;
   font-size: 13px;
-  color: yellow;
+  color: #ffcf15;
   background: #270231e8;
   border-radius: 3px;
     border-top-right-radius: 3px;
@@ -346,7 +432,7 @@ body, a{
 .menu-footer {
   color: #370644;
   font-weight: 700;
-  background: #00000042;
+  background: #0009;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;

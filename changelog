@@ -1,1 +1,2 @@
-- Updated spooky theme.
+- More spooky theme fixes
+- Mustard is breaking images and videos on the site, so I've made the css rules for images and videos more reliable
