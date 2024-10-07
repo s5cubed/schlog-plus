@@ -46,11 +46,27 @@ var settings = {
         "value":false,
         "description": "Enable the shoutbox anywhere?",
     },
+	"toggle_shoutbox_rendergifs": {
+        "type":"toggle",
+        "value":true,
+        "description": "Render gifs in the shoutbox?",
+    },
+	"toggle_move_shoutbox": {
+        "type":"toggle",
+        "value":true,
+        "description": "Toggle the ability to drag the shoutbox?",
+    },
+	"shoutbox_theme": {
+        "type":"select",
+        "value":"None",
+        "options":["None","Discord"],
+        "description": "Change the shoutbox theme.",
+    },
 	"shoutbox_position": {
         "type":"select",
         "value":"Bottom Right",
         "options":["Bottom Right","Bottom Left","Top Right","Top Left"],
-        "description": "Change the shoutbox position when using it anywhere.",
+        "description": "Change the initial shoutbox position when using it anywhere.",
     },
     "User control":"Ignore guests and staff members.",
 //	"toggle_show_stats": {

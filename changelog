@@ -1,2 +1,5 @@
-- More spooky theme fixes
-- Mustard is breaking images and videos on the site, so I've made the css rules for images and videos more reliable
+- Added shoutbox themes
+- Added a Discord theme for shoutbox
+- Added gif support in shoutbox
+- Shoutbox now automatically scrolls when a new message appears.
+- You can now drag the shoutbox. Do so by clicking on it's header and drag to move it.

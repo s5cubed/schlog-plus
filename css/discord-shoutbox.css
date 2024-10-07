@@ -1,0 +1,65 @@
+.block-container, body, .p-body {
+  color: white;
+  background: #313338;
+}
+
+.input, .button.button--link, a.button.button--link {
+  font-size: 15px;
+  color: white;
+  background: #383842;
+  border: 1px solid #000;
+}
+
+.input:focus, .input.is-focused, .input[disabled] {
+  outline: 0;
+  color: white;
+  background: #383842;
+}
+
+.input::placeholder, .input::-moz-placeholder, .input::-webkit-input-placeholder {
+  color: grey;
+  opacity: 1; /* Firefox */
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+
+.block-header, .block-footer {
+  background: #383842;
+  color: #6587d7;
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #000;
+  border-top:1px solid #000;
+}
+.block-header {
+	font-size: 18px;
+}
+
+.block-container, body, .p-body {
+  border: none;
+}
+#js-XFUniqueId56 {
+display: none;
+}
+
+.siropuShoutboxTagged {
+  background: #49433c;
+  border-left-color: #fb9f11;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-bottom-width: 10px;
+  border-bottom-style: solid;
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-radius: 4px;
+  padding: 3px;
+}

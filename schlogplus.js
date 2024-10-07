@@ -135,7 +135,10 @@ function newstufferroravoidance(settings) {
 		"schlog_plus_news":"true",
 		"toggle_custom_backgrounds":"true",
 		"shoutbox_position":"Bottom Right",
-		"toggle_shoutbox_anywhere":"false"
+		"toggle_shoutbox_anywhere":"false",
+		"toggle_shoutbox_rendergifs":"true",
+		"toggle_move_shoutbox":"true",
+		"shoutbox_theme": "None"
 	}
 	for (i in defaultvalues) {
 		if (settings[i] == undefined) {
@@ -399,8 +402,14 @@ function getSettings(settings) {
 		}
 	}
 	
+	if (settings.toggle_shoutbox_rendergifs.value && document.getElementsByClassName("siropuShoutboxShouts").length > 0) {
+		observeShoutbox(document.getElementsByClassName("siropuShoutboxShouts")[0])
+		feedShoutbox(document.getElementsByClassName("siropuShoutboxMessage"))
+	}
+	
 	if (settings.toggle_shoutbox_anywhere.value) {
 		var shoutbox = document.createElement("object")
+		var shoutboxClicked = false
 		var shoutboxStyle = document.createElement("style")
 		shoutboxStyle.textContent = "#schlogPlusShoutbox { " + settings.shoutbox_position.value.toLowerCase().split(" ")[0] + ": 0; " + settings.shoutbox_position.value.toLowerCase().split(" ")[1] + ": 0; }"
 		document.head.appendChild(shoutboxStyle)
@@ -422,30 +431,113 @@ function getSettings(settings) {
 					display: none;
 			}
 			`
+			
+			shoutbox.contentDocument.body.getElementsByClassName("block-header")[0].onmousedown = function(event) {
+				//console.log("mouse down! ", event.button) 
+				if (event.button == 0) {
+					shoutboxClicked = true
+					pos3 = event.clientX;
+					pos4 = event.clientY;
+				}
+			}
+			
+			document.body.addEventListener("mousemove",function(event) {
+				shoutboxClicked = false
+			})
+			
+			shoutbox.contentDocument.body.onmouseup = function(event) {
+				//console.log("mouse up!") 
+				shoutboxClicked = false
+			}
+			
+			shoutbox.contentDocument.body.onmousemove = function(event) {
+				if (shoutboxClicked && settings.toggle_move_shoutbox.value) {
+					//console.log("mouse move! ", event.clientX, " and ", event.clientY, " and ", event.buttons) 
+					var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+					e = event || window.event;
+					e.preventDefault();
+					pos1 = pos3 - e.clientX;
+					pos2 = pos4 - e.clientY;
+					pos3 = e.clientX;
+					pos4 = e.clientY;
+					shoutbox.style.top = (shoutbox.offsetTop - pos2) + "px";
+					shoutbox.style.left = (shoutbox.offsetLeft - pos1) + "px";
+				}
+			}
+			
 			shoutbox.contentDocument.documentElement.style = "overflow: hidden;"
-			console.log("Loaded " + shoutbox.contentDocument)
+			console.log("Loaded shoutbox" + shoutbox.contentDocument)
 			shoutbox.contentDocument.head.appendChild(rsnode)
 			resizeObserver.observe(shoutbox.contentDocument.getElementsByClassName("block-body")[0])
+			if (settings.toggle_shoutbox_rendergifs.value) {
+				feedShoutbox(shoutbox.contentDocument.getElementsByClassName("siropuShoutboxMessage"))
+				const targetNode = shoutbox.contentDocument.getElementsByClassName("siropuShoutboxShouts")[0]
+				observeShoutbox(targetNode)
+			}
+			
+			if (settings.shoutbox_theme.value != "None") {
+				var shoutboxstyle = document.createElement("style")
+				var url = browser.runtime.getURL('css/' + settings.shoutbox_theme.value.toLowerCase() + '-shoutbox.css');
+				getCSS(url,function(css) {
+					shoutboxstyle.textContent = css
+					console.log("Applying shoutbox style...")
+					shoutbox.contentDocument.head.appendChild(shoutboxstyle)
+				})
+			}
+			
 		}
 	}
+}
+
+function observeShoutbox(targetNode) {
+	const config = { childList: true, subtree: true };
+	const callback = (mutationList, observer) => {
+		for (const mutation of mutationList) {
+			if (mutation.type === "childList" && mutation.target.className == "siropuShoutboxShouts") {
+				if (!mutation.addedNodes[0].constructor.toString().includes("Text()")) {
+					feedShoutbox(mutation.addedNodes[0].getElementsByClassName("siropuShoutboxMessage"))
+				}
+				if (mutation.target.parentElement.getElementsByTagName("form")[0].className.includes("Reverse")) {
+					mutation.target.scrollTo(0,mutation.target.scrollHeight)
+				}
+				else {
+					mutation.target.scrollTo(0,-mutation.target.scrollHeight)
+				}
+			}
+		}
+	};
+	// Create an observer instance linked to the callback function and Start observing the target node for configured mutations
+	const observer = new MutationObserver(callback);
+	observer.observe(targetNode, config);
+}
+
+function feedShoutbox(nodes) {
+	for (var n = 0; n < nodes.length; n++) {
+		var text = nodes[n]
+		//console.log("A child node has been added or removed. ", text);
+		if (text.innerHTML.startsWith("http") && (text.innerHTML.endsWith(".gif") || text.innerHTML.endsWith(".png") || text.innerHTML.endsWith(".jpg") || text.innerHTML.endsWith(".jpeg"))) {
+			text.innerHTML = "<img style='max-width: 300px;display: block;' class='shoutboxImg' src='" + text.innerHTML + "'>"
+			//console.log("Image Added to Shoutbox")
+		}
+	}
+}
+
+function moveUp(element) {
+	if(element.previousElementSibling)
+		element.parentNode.insertBefore(element, element.previousElementSibling);
+}
+function moveDown(element) {
+	if(element.nextElementSibling)
+		element.parentNode.insertBefore(element.nextElementSibling, element);
 }
 
 
 // This function checks for changes in messages for the word filter and other cool text stuff.
 function changeElements(settings) {
 	var effectElements = [document.getElementsByClassName("p-title-value")[0]]
-	//var rainbowregex = /\[rainbow\](\s?([A-Za-z]+\s?)+)\[\/rainbow\]/gi
-	//var regex = /\[[^\]]*\](\s?([A-Za-z]+\s?)+)\[\/[A-Za-z]+\]/gi
-	//var regex = /\[[^\]]*\](\s?(\S\s?)+)\[\/[A-Za-z]+\]/gi
-	//var regex = /\[[^\]]*\](.*?)\[\/[A-Za-z]+\]/gi
 	var regex = /\[(.*?)\](.*?)\[\/\1\]/gi
 	var bracketregex = /\[[^\]]*\]/gi
-	//var thing = document.getElementsByClassName("message-content js-messageContent");
-	//for (var i = 0; i < thing.length; i++) {
-		//effectElements.push(thing[i])
-		//thing[i].innerHTML = thing[i].innerHTML.replace("schlog","shlog")
-	//}
-		
+
 	// This gets message text.
 	var conversationMessages = document.getElementsByClassName("message-userContent lbContainer js-lbContainer")
 	for (var i=0; i < conversationMessages.length; i++) {
