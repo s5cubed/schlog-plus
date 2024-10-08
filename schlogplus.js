@@ -26,6 +26,22 @@ if (typeof browser === "undefined") {
 	browserType = "chrome";
 }
 
+function getJson(path, callfunc) {
+	fetch(path, {mode: 'no-cors'}).then(
+		(res) => {
+			if (!res.ok) {
+				throw new Error(`HTTP error! Status: ${res.status}`);
+			}
+			return res.json();
+		}
+		
+	).then(
+		(data) => callfunc(data)
+	).catch(
+		(error) =>console.error("Unable to fetch data:", error)
+	);
+}
+
 function getCSS(path, callfunc) {
 	fetch(path).then(
 		(res) => {
@@ -138,6 +154,7 @@ function newstufferroravoidance(settings) {
 		"toggle_shoutbox_anywhere":"false",
 		"toggle_shoutbox_rendergifs":"true",
 		"toggle_move_shoutbox":"true",
+		"toggle_earned_pins":"true",
 		"shoutbox_theme": "None"
 	}
 	for (i in defaultvalues) {
@@ -146,6 +163,18 @@ function newstufferroravoidance(settings) {
 		}
 	}
 }
+
+function trimSpaces (str) {
+    str = str.replace(/^\s+/, '');
+    for (var i = str.length - 1; i >= 0; i--) {
+        if (/\S/.test(str.charAt(i))) {
+            str = str.substring(0, i + 1);
+            break;
+        }
+    }
+    return str;
+}
+
 
 // Extension's main decision making block
 function getSettings(settings) {
@@ -162,14 +191,37 @@ function getSettings(settings) {
 			})
 		}
 	}
-// Planned but not fully implemented.	
-//	if (settings.schlog_plus_news.value) {
-//			var newsDiv = document.createElement("div")
-//			newsText = "Schlog+ News: This is a test!"
-//			newsDiv.innerHTML = "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>" + newsText
-//			newsDiv.style = "text-align: center;"
-//			document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
-//	}
+
+	if (settings.schlog_plus_news.value) {
+		var newsDiv = document.createElement("div")
+		newsDiv.style = "text-align: center;"
+		newsDiv.id = "schlogPlusNews"
+		document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
+		getHTMLPage("https://soyjak.blog/index.php?banned-users-list/",function(html) {
+			newsText = `<marquee style="width:40%">Schlog+ News: No news!
+			 Most recently banned member: <a href= "` + html.getElementsByClassName("username ")[0].href + `">` + html.getElementsByClassName("username ")[0].textContent + `</a>. They were banned for "` + trimSpaces(html.getElementsByClassName("dataList-cell")[7].textContent) + `" until ` + trimSpaces(html.getElementsByClassName("dataList-cell")[6].textContent) + `. <a href="https://soyjak.blog/index.php?threads/ban-megathread.6656/">Discuss it here.</a></marquee>`
+			newsDiv.innerHTML = "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>" + newsText + "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>"
+			//document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
+			
+			var repoUrl = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/manifest.json"
+			browser.runtime.sendMessage({ type: "fetchData", url: repoUrl, slot:"manifest" }, (response) => {
+				if (response.error) {
+					console.error(response.error);
+				} else {
+					getJson(browser.runtime.getURL("manifest.json"), function(data) {
+						var updatetext = ""
+						if (response.data.version != data.version) {
+							updatetext = ". The most recent version is " + response.data.version + " <a href='https://github.com/sss5sss555s5s5s5/schlog-plus/releases'>Click here to update.</a>"
+							console.log("RUNNING")
+							document.getElementById("schlogPlusNews").innerHTML = document.getElementById("schlogPlusNews").innerHTML + "<br>You are running Schlog+ Version: " + data.version + updatetext
+						}
+					})
+				}
+			});
+			
+		})
+		
+	}
 	// Enable custom stylesheets
 	if (settings.custom_stylesheet.value != "") {
 		var style = document.createElement("style")

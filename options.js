@@ -144,6 +144,11 @@ var settings = {
         "description": "Profile music volume.",
     },
     "Fun stuff":"Custom badges and free swag.",
+	"toggle_earned_pins": {
+        "type":"toggle",
+        "value":true,
+        "description": "Disable Earned Pins?",
+    },
     "toggle_custom_badges": {
         "type":"toggle",
         "value":true,
@@ -154,11 +159,11 @@ var settings = {
         "value":true,
         "description": "Toggle Custom Profile Backgrounds?",
     },
-//	"schlog_plus_news": {
-//        "type":"toggle",
-//        "value":true,
-//        "description": "Toggle Schlog+ News?",
-//    },
+	"schlog_plus_news": {
+        "type":"toggle",
+        "value":true,
+        "description": "Toggle Schlog+ News?",
+    },
 	"show_schlogplus_users": {
         "type":"toggle",
         "value":true,

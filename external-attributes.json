@@ -1,0 +1,21 @@
+{
+	"news":"Schlog+ News officially opens and gets its first headline from Github.",
+	"pins":{
+		"PinkTriangle": {
+			"description":"Disruptive Guest",
+			"image":"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Pink_triangle.svg/220px-Pink_triangle.svg.png",
+			"location":"Username"
+		}
+	},
+	"users": {
+		"599":{
+			"pins": ["PinkTriangle"]
+		},
+		"1171":{
+			"pins": ["PinkTriangle"]
+		},
+		"864": {
+			"pins": ["PinkTriangle"]
+		}
+	}
+} 

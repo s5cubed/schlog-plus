@@ -1,5 +1,2 @@
-- Added shoutbox themes
-- Added a Discord theme for shoutbox
-- Added gif support in shoutbox
-- Shoutbox now automatically scrolls when a new message appears.
-- You can now drag the shoutbox. Do so by clicking on it's header and drag to move it.
+- Added "Earned Pins" or "Pins". These are something that users can earn that stays with them forever, they can either be for good, or for worse.
+- Added Schlog+ News.

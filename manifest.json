@@ -15,7 +15,7 @@
     },
   
   "web_accessible_resources": [
-    "css/*.css"
+    "css/*.css","*.json"
 	],
 
   "content_scripts": [
