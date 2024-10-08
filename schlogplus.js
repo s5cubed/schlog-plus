@@ -19,6 +19,11 @@ var tagSettings = {
 "spin":"<span class='rotate'>INSERT_TEXT_HERE</span>"
 }
 
+var externalAttributes = {}
+var pinsGiven = []
+var globalSettings = {}
+var sendingAttributeRequest = false
+
 var profile_music_pause_offtab = true;
 var browserType = "firefox"
 if (typeof browser === "undefined") {
@@ -155,6 +160,7 @@ function newstufferroravoidance(settings) {
 		"toggle_shoutbox_rendergifs":"true",
 		"toggle_move_shoutbox":"true",
 		"toggle_earned_pins":"true",
+		"toggle_earned_pins_local":"false",
 		"shoutbox_theme": "None"
 	}
 	for (i in defaultvalues) {
@@ -178,6 +184,7 @@ function trimSpaces (str) {
 
 // Extension's main decision making block
 function getSettings(settings) {
+	globalSettings = settings
 	newstufferroravoidance(settings)
 	autoStyle()
 	
@@ -204,7 +211,8 @@ function getSettings(settings) {
 			//document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
 			
 			var repoUrl = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/manifest.json"
-			browser.runtime.sendMessage({ type: "fetchData", url: repoUrl, slot:"manifest" }, (response) => {
+			var externalAttributes = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/external-attributes.json"
+			browser.runtime.sendMessage({ type: "fetchData", url: repoUrl}, (response) => {
 				if (response.error) {
 					console.error(response.error);
 				} else {
@@ -212,12 +220,18 @@ function getSettings(settings) {
 						var updatetext = ""
 						if (response.data.version != data.version) {
 							updatetext = ". The most recent version is " + response.data.version + " <a href='https://github.com/sss5sss555s5s5s5/schlog-plus/releases'>Click here to update.</a>"
-							console.log("RUNNING")
+							//console.log("RUNNING")
 							document.getElementById("schlogPlusNews").innerHTML = document.getElementById("schlogPlusNews").innerHTML + "<br>You are running Schlog+ Version: " + data.version + updatetext
 						}
 					})
 				}
 			});
+			browser.runtime.sendMessage({ type: "fetchData", url: externalAttributes}, (response) => {
+				if (response.data) {
+					document.getElementById("schlogPlusNews").innerHTML = document.getElementById("schlogPlusNews").innerHTML.replace("No news!",response.data.news)
+					externalAttributes = response.data
+				}
+			})
 			
 		})
 		
@@ -293,7 +307,7 @@ function getSettings(settings) {
 	}
 	// Timeout to allow script to find messagebox
 	setTimeout(autoGreentext, 500)
-	
+
 	updateFunction(settings)
 	// When you click on new post or show new posts this will trigger.
 	document.body.addEventListener("mousedown", event=> {
@@ -310,6 +324,7 @@ function getSettings(settings) {
 					bannerdiv.className = "memberHeader-banners"
 					memberHeader.insertBefore(bannerdiv,memberHeader.getElementsByClassName("memberHeader-blurbContainer")[0])
 					var userName = memberHeader.getElementsByClassName("username ")[0]
+					getUserPins(userName, window.location.href.split(".")[window.location.href.split(".").length - 1].replace("/",""), true)
 					var bracketregex = /\[#(?:[A-Fa-f0-9]{3}){1,2}\b\]/gi
 					var parenthesisRegex = /\(#(?:[A-Fa-f0-9]{3}){1,2}\b\)/gi
 					var matches = userTitle[0].textContent.match(bracketregex)
@@ -648,6 +663,65 @@ document.addEventListener("visibilitychange", (event) => {
 	}
 });
 
+function getUserPins(userName, userID = userName.href.split(".")[userName.href.split(".").length - 1].replace("/",""),profilePage = false) {
+	//console.log("Attempting to get userPins, profilePage? ", profilePage)
+	if (userName === undefined || globalSettings.toggle_earned_pins.value == false) {
+		//console.log("userName is undefined")
+		return true
+	}
+	var externalAttributesURL = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/external-attributes.json"
+	if (globalSettings.toggle_earned_pins_local.value == true) {externalAttributesURL = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/bogusurl.json"}
+
+	if (isEmpty(externalAttributes)) {
+		if (!sendingAttributeRequest) {
+			console.log("Getting external attributes from Github... please wait.")
+			sendingAttributeRequest = true
+			browser.runtime.sendMessage({ type: "fetchData", url: externalAttributesURL}, (response) => {
+				if (response.data) {
+					console.log("Success. You have acquired the fully up to date external attributes file.")
+					externalAttributes = response.data
+					sendingAttributeRequest = false
+					updateFunction(globalSettings)
+					if (profilePage) {getUserPins(userName, userID,profilePage)}
+				}
+				else {
+					console.log("Couldn't get External Attributes JSON from GitHub, running some backup code")
+					getJson(browser.runtime.getURL("external-attributes.json"), function(data) {
+						externalAttributes = data
+						sendingAttributeRequest = false
+						updateFunction(globalSettings)
+						if (profilePage) {getUserPins(userName, userID,profilePage)}
+					})
+				}
+			})
+		}
+		
+	}
+	else {
+		//console.log("Not empty attributes")
+		if (userID in externalAttributes.users) {
+			//console.log("UserID: " + userID + " has a pin")
+			for (p = 0; p < externalAttributes.users[userID].pins.length; p++) {
+				var pin = externalAttributes.users[userID].pins[p]
+				var addLocation = userName
+				var pinData = externalAttributes.pins[pin]
+				var pinImg = document.createElement("img")
+				pinImg.src = pinData.image
+				pinImg.className = pin
+				pinImg.style = "width: 12px; margin-left:4px"
+				pinImg.title = pinData.description
+				if (pinData.location == "UserSection") {
+					addLocation = userName.parentElement.parentElement.parentElement.parentElement
+					pinImg.style = "width: 32px; margin-left:4px"
+				}
+				if (addLocation.getElementsByClassName(pin).length <= 0) {
+					addLocation.appendChild(pinImg)
+				}
+			}
+		}
+	}
+}
+
 function updateFunction(settings) {
 	// If you are currently on a thread page...
 	if (window.location.href.includes("threads") || window.location.href.includes("conversations")) {
@@ -688,6 +762,7 @@ function updateFunction(settings) {
 				var bracketregex = /\[#(?:[A-Fa-f0-9]{3}){1,2}\b\]/gi
 				var parenthesisRegex = /\(#(?:[A-Fa-f0-9]{3}){1,2}\b\)/gi
 				var matches = userTitle[0].textContent.match(bracketregex)
+				getUserPins(userName)
 				if (userTitle[0].textContent.match(parenthesisRegex)) {
 					userName.style = "color:" + userTitle[0].textContent.match(parenthesisRegex)[0].replace("(","").replace(")","") + ";"
 					userTitle[0].textContent = userTitle[0].textContent.replace(userTitle[0].textContent.match(parenthesisRegex)[0],"")

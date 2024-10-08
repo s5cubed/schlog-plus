@@ -147,7 +147,7 @@ var settings = {
 	"toggle_earned_pins": {
         "type":"toggle",
         "value":true,
-        "description": "Disable Earned Pins?",
+        "description": "Toggle Earned Pins?",
     },
     "toggle_custom_badges": {
         "type":"toggle",
@@ -174,6 +174,12 @@ var settings = {
         "value":"Off",
         "options":["Off","Schlog to Shlog","Shlog to Schlog"],
         "description": "Auto word filter Schlog to Shlog, or Shlog to Schlog?",
+    },
+	"Developer Settings":"Only enable these if you know what you're doing.",
+	"toggle_earned_pins_local": {
+        "type":"toggle",
+        "value":false,
+        "description": "Uses your local external-attributes file instead of the repo's. Use this to test custom pins.",
     },
 }
 

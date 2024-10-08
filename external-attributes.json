@@ -1,10 +1,15 @@
 {
-	"news":"Schlog+ News officially opens and gets its first headline from Github.",
+	"news":"The janitorial elections will close later today at 7:29 PM. The two leading candidates are Steve and Imperator.",
 	"pins":{
 		"PinkTriangle": {
 			"description":"Disruptive Guest",
 			"image":"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Pink_triangle.svg/220px-Pink_triangle.svg.png",
 			"location":"Username"
+		},
+		"Aspie": {
+			"description":"Special Boy",
+			"image":"https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/images/autism.png",
+			"location":"UserSection"
 		}
 	},
 	"users": {

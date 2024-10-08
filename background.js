@@ -9,7 +9,6 @@
 // This code is lcensed under the MIT License, please credit me in your forks.
 // ===========================================================================
 
-var memorySlots = {}
 var browserType = "firefox"
 if (typeof browser === "undefined") {
 	var browser = chrome;
@@ -27,7 +26,7 @@ function getCurrentSettings(result) {
 }
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "fetchData" && message.url && message.slot) {
+  if (message.type === "fetchData" && message.url) {
     fetch(message.url)
       .then(response => {
         if (!response.ok) {
@@ -36,7 +35,6 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return response.json();
       })
       .then(data => {
-		memorySlots[message.slot] = data
         sendResponse({ data: data });
       })
       .catch(error => {
@@ -44,9 +42,6 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ error: 'Failed to fetch data' });
       });
     return true; // Indicate asynchronous response
-  }
-  if (message.type === "getVariable" && message.slot) {
-    sendResponse({ myVariable: memorySlots[message.slot]});
   }
   
 });
