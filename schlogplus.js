@@ -160,8 +160,14 @@ function newstufferroravoidance(settings) {
 		"toggle_shoutbox_rendergifs":"true",
 		"toggle_move_shoutbox":"true",
 		"toggle_earned_pins":"true",
+		"toggle_default_reaction":"false",
+		"custom_reaction_text":"Dislike",
 		"toggle_earned_pins_local":"false",
-		"shoutbox_theme": "None"
+		"custom_reaction_id":"50",
+		"shoutbox_theme": "None",
+		"greentext_colour": "#789922",
+		"orangetext_colour":  "#f6750b",
+		"bluetext_colour": "#6577E6"
 	}
 	for (i in defaultvalues) {
 		if (settings[i] == undefined) {
@@ -266,6 +272,17 @@ function getSettings(settings) {
 	
 	function autoGreentext() {
 		if (settings.toggle_auto_greentext.value == true) {
+			var colourregex = /#(?:[A-Fa-f0-9]{3}){1,2}\b/i
+			var greentext_colour = colourregex.exec(settings.greentext_colour.value)[0] || "#789922"
+			var orangetext_colour = colourregex.exec(settings.orangetext_colour.value)[0] || "#f6750b"
+			var bluetext_colour = colourregex.exec(settings.bluetext_colour.value)[0] || "#6577E6"
+			
+			var styles = {
+				">": greentext_colour,
+				"<": orangetext_colour,
+				"^": bluetext_colour
+			}
+			
 			if (document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible").length > 0) {
 				var messageBox = document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0]
 				document.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0].addEventListener("keypress",function(e) {
@@ -283,19 +300,7 @@ function getSettings(settings) {
 									//console.log("Empty text for some reason, 1: ", messageBox.childNodes[i].textContent[1], " 2: ", messageBox.childNodes[i].textContent[2])
 									checkval = messageBox.childNodes[i].textContent[1]
 								}
-								if (checkval == ">")
-								{
-									messageBox.childNodes[i].style = "color: #789922;"
-									//console.log("Valid configuration met, your text colour has changed.")
-								}
-								else if (checkval == "<") {
-									messageBox.childNodes[i].style = "color: #f6750b"
-									//console.log("Valid configuration met, your text colour has changed.")
-								}
-								else if (checkval == "^") {
-									messageBox.childNodes[i].style = "color: #6577E6"
-									//console.log("Valid configuration met, your text colour has changed.")
-								}
+								messageBox.childNodes[i].style = "color: " + styles[checkval] + ";"
 							}
 					}
 				})
@@ -723,6 +728,7 @@ function getUserPins(userName, userID = userName.href.split(".")[userName.href.s
 }
 
 function updateFunction(settings) {
+	var numberRegex = /[0-9]+/i
 	// If you are currently on a thread page...
 	if (window.location.href.includes("threads") || window.location.href.includes("conversations")) {
 		var messageInner = document.getElementsByClassName("message-inner")
@@ -735,12 +741,12 @@ function updateFunction(settings) {
 			}
 			
 			if (messageInner[i].getElementsByClassName("reaction-text js-reactionText").length > 0) {
-					if (settings.toggle_dislike_button.value) {
-						messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].textContent = "Dislike"
+					if (settings.toggle_default_reaction.value) {
+						messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].textContent = settings.custom_reaction_text.value || "Dislike"
 						if (messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.getElementsByTagName("i").length > 0) {
 							messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.getElementsByTagName("i")[0].remove()
 						}
-						messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.href = messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.href.replace("reaction_id=1","reaction_id=50")
+						messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.href = messageInner[i].getElementsByClassName("reaction-text js-reactionText")[0].parentNode.href.replace("reaction_id=1","reaction_id=" + numberRegex.exec(settings.custom_reaction_id.value)[0]) || 21
 					}
 			}
 			
@@ -757,11 +763,13 @@ function updateFunction(settings) {
 			var schlogPlusUserImgAdded = false
 			schlogPlusUserImg.src = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png"
 			schlogPlusUserImg.style = "width: 12px; margin-left:4px"
-			if (userName.length > 0) {userName = userName[0].getElementsByTagName("A")[0]}
+			if (userName.length > 0) {userName = userName[0].getElementsByTagName("A")[0] || userName[0].childNodes[0]}
 			if (settings.toggle_custom_badges.value && messageInner[i] != undefined && userTitle.length > 0) {
 				var bracketregex = /\[#(?:[A-Fa-f0-9]{3}){1,2}\b\]/gi
 				var parenthesisRegex = /\(#(?:[A-Fa-f0-9]{3}){1,2}\b\)/gi
 				var matches = userTitle[0].textContent.match(bracketregex)
+				// Fix for guests breaking pins o algo
+				if (userName.href === undefined) {userName.href = "Guest"}
 				getUserPins(userName)
 				if (userTitle[0].textContent.match(parenthesisRegex)) {
 					userName.style = "color:" + userTitle[0].textContent.match(parenthesisRegex)[0].replace("(","").replace(")","") + ";"

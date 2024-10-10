@@ -1,2 +1,3 @@
-- Added "Earned Pins" or "Pins". These are something that users can earn that stays with them forever, they can either be for good, or for worse...
-- Added Schlog+ News. Now when browsing the schlog, you will be greeted to a news headline.
+- Fixed Guests breaking badges and the user pin system due to them not having a profile.
+- Added custom arrow colour variables, due to a few user's requests.
+- Changed the dislike button to be any reaction you want.

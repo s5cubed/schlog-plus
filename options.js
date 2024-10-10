@@ -35,10 +35,35 @@ var settings = {
         "value":true,
         "description": "Automatically input greentext and orangetext when using '>' and '<' ?",
     },
-	"toggle_dislike_button": {
+	"greentext_colour": {
+        "type":"textline",
+        "value":"#789922",
+        "description": "Change the default colour for > ",
+    },
+	"orangetext_colour": {
+        "type":"textline",
+        "value":"#f6750b",
+        "description": "Change the default colour for < ",
+    },
+	"bluetext_colour": {
+        "type":"textline",
+        "value":"#6577E6",
+        "description": "Change the default colour for ^ ",
+    },
+	"toggle_default_reaction": {
         "type":"toggle",
         "value":false,
-        "description": "Your default reaction becomes negative instead of positive.",
+        "description": "Your default reaction becomes different based on the custom ID you use.",
+    },
+	"custom_reaction_id": {
+        "type":"textline",
+        "value":"21",
+        "description": "Change the default reaction ID ",
+    },
+	"custom_reaction_text": {
+        "type":"textline",
+        "value":"Dislike",
+        "description": "Change the default reaction text ",
     },
 	"Feature Control":"Configure site features to your liking",
 	"toggle_shoutbox_anywhere": {
