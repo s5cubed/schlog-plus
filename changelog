@@ -1,3 +1,1 @@
-- Fixed Guests breaking badges and the user pin system due to them not having a profile.
-- Added custom arrow colour variables, due to a few user's requests.
-- Changed the dislike button to be any reaction you want.
+- Hopefully fixed a bug in regards to moderators having a bugged news feed, banned members would not be given the correct duration or reason.

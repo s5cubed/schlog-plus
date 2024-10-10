@@ -212,7 +212,7 @@ function getSettings(settings) {
 		document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
 		getHTMLPage("https://soyjak.blog/index.php?banned-users-list/",function(html) {
 			newsText = `<marquee style="width:40%">Schlog+ News: No news!
-			 Most recently banned member: <a href= "` + html.getElementsByClassName("username ")[0].href + `">` + html.getElementsByClassName("username ")[0].textContent + `</a>. They were banned for "` + trimSpaces(html.getElementsByClassName("dataList-cell")[7].textContent) + `" until ` + trimSpaces(html.getElementsByClassName("dataList-cell")[6].textContent) + `. <a href="https://soyjak.blog/index.php?threads/ban-megathread.6656/">Discuss it here.</a></marquee>`
+			 Most recently banned member: <a href= "` + html.getElementsByClassName("username ")[0].href + `">` + html.getElementsByClassName("username ")[0].textContent + `</a>. They were banned for "` + trimSpaces(html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell")[3].textContent) + `" until ` + trimSpaces(html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell")[2].textContent) + `. <a href="https://soyjak.blog/index.php?threads/ban-megathread.6656/">Discuss it here.</a></marquee>`
 			newsDiv.innerHTML = "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>" + newsText + "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>"
 			//document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
 			
