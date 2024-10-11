@@ -211,10 +211,15 @@ function getSettings(settings) {
 		newsDiv.id = "schlogPlusNews"
 		document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
 		getHTMLPage("https://soyjak.blog/index.php?banned-users-list/",function(html) {
+			var staffOffset = 0
+			console.log("Length: ", html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell").length)
+			if (html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell").length > 4) {
+				console.log("There are more banned cells than usual, you must be a staff member.")
+				staffOffset = 1
+			}
 			newsText = `<marquee style="width:40%">Schlog+ News: No news!
-			 Most recently banned member: <a href= "` + html.getElementsByClassName("username ")[0].href + `">` + html.getElementsByClassName("username ")[0].textContent + `</a>. They were banned for "` + trimSpaces(html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell")[3].textContent) + `" until ` + trimSpaces(html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell")[2].textContent) + `. <a href="https://soyjak.blog/index.php?threads/ban-megathread.6656/">Discuss it here.</a></marquee>`
+			 Most recently banned member: <a href= "` + html.getElementsByClassName("username ")[0].href + `">` + html.getElementsByClassName("username ")[0].textContent + `</a>. They were banned for "` + trimSpaces(html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell")[3 + staffOffset].textContent) + `" until ` + trimSpaces(html.getElementsByClassName("dataList-row")[1].getElementsByClassName("dataList-cell")[2].textContent) + `. <a href="https://soyjak.blog/index.php?threads/ban-megathread.6656/">Discuss it here.</a></marquee>`
 			newsDiv.innerHTML = "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>" + newsText + "<img src='https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/icons/icon-256.png' width=20px>"
-			//document.getElementById("top").insertBefore(newsDiv,document.getElementsByClassName("p-body")[0])
 			
 			var repoUrl = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/manifest.json"
 			var externalAttributes = "https://raw.githubusercontent.com/sss5sss555s5s5s5/schlog-plus/refs/heads/main/external-attributes.json"
