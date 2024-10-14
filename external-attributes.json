@@ -21,6 +21,9 @@
 		},
 		"864": {
 			"pins": ["PinkTriangle"]
+		},
+		"1259": {
+			"pins": ["PinkTriangle"]
 		}
 	}
 } 
