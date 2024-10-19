@@ -184,6 +184,16 @@ var settings = {
         "value":true,
         "description": "Toggle Custom Profile Backgrounds?",
     },
+	"toggle_custom_banners": {
+		"type":"toggle",
+		"value":true,
+		"description": "Toggle custom banner URLs? This will fix gifs in banners if used properly.",
+	},
+	"toggle_custom_pfps": {
+		"type":"toggle",
+		"value":true,
+		"description": "Toggle custom pfp URLs? This will fix gifs in pfps if used properly.",
+	},
 	"schlog_plus_news": {
         "type":"toggle",
         "value":true,

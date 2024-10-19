@@ -1,1 +1,1 @@
-- Hopefully fixed a bug in regards to moderators having a bugged news feed, banned members would not be given the correct duration or reason.
+- Allowed users to set their banners and pfps to alternative sources, like tenor. Fixes gifs partially.

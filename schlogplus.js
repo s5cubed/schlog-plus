@@ -160,6 +160,8 @@ function newstufferroravoidance(settings) {
 		"toggle_shoutbox_rendergifs":"true",
 		"toggle_move_shoutbox":"true",
 		"toggle_earned_pins":"true",
+		"toggle_custom_banners":"true",
+		"toggle_custom_pfps":"true",
 		"toggle_default_reaction":"false",
 		"custom_reaction_text":"Dislike",
 		"toggle_earned_pins_local":"false",
@@ -396,6 +398,8 @@ function getSettings(settings) {
 				var playerlocation = document.getElementsByClassName("memberHeader-buttons")[0]
 				var musicUrl = ""
 				var bgUrl = ""
+				var pfpUrl = ""
+				var bannerUrl = ""
 				
 				var bg = document.createElement("style")
 				var bgMore = ".p-breadcrumbs {text-shadow: 4px 4px black;}"
@@ -418,12 +422,24 @@ function getSettings(settings) {
 						if (aboutText[i].textContent.toLowerCase() == "[background]" && settings.toggle_custom_backgrounds.value) {
 							bgUrl = aboutText[i].href
 						}
+						if (aboutText[i].textContent.toLowerCase() == "[banner]" && settings.toggle_custom_banners.value) {
+							bannerUrl = aboutText[i].href
+						}
+						if (aboutText[i].textContent.toLowerCase() == "[pfp]" && settings.toggle_custom_banners.value) {
+							pfpUrl = aboutText[i].href
+						}
 					}
 					else if (aboutText[i].constructor == Text && aboutText[i].data.toLowerCase().includes("[music]") && aboutText[i].data.toLowerCase().includes("[/music]")) {
 						musicUrl = aboutText[i].data.replace("[MUSIC]","").replace("\n","").replace("[/MUSIC]","").replace("[music]","").replace("[/music]","")
 					}
 					else if (aboutText[i].constructor == Text && aboutText[i].data.toLowerCase().includes("[bg]") && aboutText[i].data.toLowerCase().includes("[/bg]")) {
 						bgUrl = aboutText[i].data.replace("[BG]","").replace("\n","").replace("[/BG]","").replace("[bg]","").replace("[/bg]","")
+					}
+					else if (aboutText[i].constructor == Text && aboutText[i].data.toLowerCase().includes("[banner]") && aboutText[i].data.toLowerCase().includes("[/banner]")) {
+						bannerUrl = aboutText[i].data.replace("[BANNER]","").replace("\n","").replace("[/BANNER]","").replace("[banner]","").replace("[/banner]","")
+					}
+					else if (aboutText[i].constructor == Text && aboutText[i].data.toLowerCase().includes("[pfp]") && aboutText[i].data.toLowerCase().includes("[/pfp]")) {
+						pfpUrl = aboutText[i].data.replace("[PFP]","").replace("\n","").replace("[/PFP]","").replace("[pfp]","").replace("[/pfp]","")
 					}
 				}
 				if (musicUrl.startsWith("http") && settings.enable_profile_music.value) {
@@ -436,6 +452,18 @@ function getSettings(settings) {
 					bg.textContent = ".p-body {background: url('" + bgUrl + "'); background-size: 100%; background-attachment: fixed;} " + bgMore
 					document.head.appendChild(bg)	
 				}
+				if (bannerUrl.startsWith("http") && settings.toggle_custom_banners.value && document.getElementsByClassName("memberProfileBanner memberHeader-main").length > 0) {
+					document.getElementsByClassName("memberProfileBanner memberHeader-main")[0].style.backgroundImage = `url("` + bannerUrl + `")`
+				}
+				if (pfpUrl.startsWith("http") && settings.toggle_custom_pfps.value && document.getElementsByClassName("memberHeader-nameWrapper").length > 0) {
+					var username = document.getElementsByClassName("memberHeader-nameWrapper")[0].children[0].textContent
+					for (var i = 0; i < document.getElementsByTagName("IMG").length; i++) {
+						if (document.getElementsByTagName("IMG")[i].alt == username) {
+							document.getElementsByTagName("IMG")[i].src = pfpUrl
+						}
+					}
+				//	document.getElementsByClassName("avatar avatar--l")[0].children[0].src = pfpUrl
+				}
 			}
 		)
 	}
@@ -443,7 +471,7 @@ function getSettings(settings) {
 	// Page takes a lil while to load so if we gi ve it a delay it will eventually get in.
 	setTimeout(profileButtons, 300);
 	function profileButtons() { 
-		var features = ["Music","Background"]
+		var features = ["Music","Background","Banner","PFP"]
 		if (window.location.href.includes("account-details")) {
 			var schlogPlusLabel = document.createElement("label")
 			var schlogPlusDiv = document.createElement("div")
@@ -456,7 +484,7 @@ function getSettings(settings) {
 				var InputField = document.createElement("input")
 				InputField.placeholder = features[feature] + " url..."
 				InputField.id = features[feature] + "InputField"
-				InputField.style = "max-height:30px;margin-top: 7px;margin-left:5px"
+				InputField.style = "max-height:30px;margin-top: 7px;margin-left:5px; width:200px"
 				schlogPlusDiv.appendChild(InputField)
 				InputField.addEventListener("keypress", function(event) {
 					if (event.key === "Enter") {
