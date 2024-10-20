@@ -1,1 +1,1 @@
-- Allowed users to set their banners and pfps to alternative sources, like tenor. Fixes gifs partially.
+- Fixed a lag glitch discovered by Hagon and Steve. Spamming a lot of images (emojis) causes Schlog+ to iterate through all of them and cause browser lag. This stops that from happening. The function that this is used for is not even that important anyways and basically nobody uses it's features unfortunately.

@@ -642,16 +642,23 @@ function changeElements(settings) {
 	var effectElements = [document.getElementsByClassName("p-title-value")[0]]
 	var regex = /\[(.*?)\](.*?)\[\/\1\]/gi
 	var bracketregex = /\[[^\]]*\]/gi
+	var docDivs = document.getElementsByTagName("div")
 
 	// This gets message text.
 	var conversationMessages = document.getElementsByClassName("message-userContent lbContainer js-lbContainer")
 	for (var i=0; i < conversationMessages.length; i++) {
-			effectElements.push(conversationMessages[i])
+		if(conversationMessages[i].getElementsByClassName("bbWrapper").length > 0) {
+			if(conversationMessages[i].getElementsByClassName("bbWrapper")[0].childElementCount < 100) {
+				effectElements.push(conversationMessages[i])
+			}
+		}
 	}
-	for(var i=0; i < document.getElementsByTagName("div").length; i++ ) { 
-		if(document.getElementsByTagName("div")[i].hasAttribute("itemprop")) {
-			if (document.getElementsByTagName("div")[i].getAttribute("itemprop") == "text") {
-				effectElements.push((document.getElementsByTagName("div")[i]))
+	for(var i=0; i < docDivs.length; i++ ) { 
+		if(docDivs[i].hasAttribute("itemprop")) {
+			if (docDivs[i].getAttribute("itemprop") == "text") {
+				if (docDivs[i].children[0].childElementCount < 100) {
+					effectElements.push((document.getElementsByTagName("div")[i]))
+				}
 			}
 		}
 	}
@@ -667,6 +674,7 @@ function changeElements(settings) {
 				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toLowerCase(), settings.schlog_or_shlog.value.split(" ")[2].toLowerCase()); 
 				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
 			}
+			
 			var matches = effectElements[i].innerHTML.match(regex)
 			if (matches) {
 				for (m=0;m < matches.length;m++) {
