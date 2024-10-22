@@ -216,6 +216,11 @@ var settings = {
         "value":false,
         "description": "Uses your local external-attributes file instead of the repo's. Use this to test custom pins.",
     },
+	"disable_text_tags": {
+        "type":"toggle",
+        "value":true,
+        "description": "Disables tags like [rainbow]test[/rainbow] due to RegEx causing lag.",
+    },
 }
 
 var browserType = "firefox"

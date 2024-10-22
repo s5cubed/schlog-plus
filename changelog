@@ -1,1 +1,1 @@
-- Fixed a lag glitch discovered by Hagon and Steve. Spamming a lot of images (emojis) causes Schlog+ to iterate through all of them and cause browser lag. This stops that from happening. The function that this is used for is not even that important anyways and basically nobody uses it's features unfortunately.
+- Disabled custom text tags due to Regex causing an immense amount of lag on certain threads. You can turn it back on yourself in the Developer Settings in Settings.

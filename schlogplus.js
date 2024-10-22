@@ -169,7 +169,8 @@ function newstufferroravoidance(settings) {
 		"shoutbox_theme": "None",
 		"greentext_colour": "#789922",
 		"orangetext_colour":  "#f6750b",
-		"bluetext_colour": "#6577E6"
+		"bluetext_colour": "#6577E6",
+		"disable_text_tags":"true"
 	}
 	for (i in defaultvalues) {
 		if (settings[i] == undefined) {
@@ -653,20 +654,20 @@ function changeElements(settings) {
 			}
 		}
 	}
-	for(var i=0; i < docDivs.length; i++ ) { 
-		if(docDivs[i].hasAttribute("itemprop")) {
-			if (docDivs[i].getAttribute("itemprop") == "text") {
-				if (docDivs[i].children[0].childElementCount < 100) {
-					effectElements.push((document.getElementsByTagName("div")[i]))
-				}
-			}
-		}
-	}
+//	for(var i=0; i < docDivs.length; i++ ) { 
+//		if(docDivs[i].hasAttribute("itemprop")) {
+//			if (docDivs[i].getAttribute("itemprop") == "text") {
+//				if (docDivs[i].children[0].childElementCount < 100) {
+//					effectElements.push((document.getElementsByTagName("div")[i]))
+//				}
+//			}
+//		}
+//	}
 		
 	for(var i=0; i < document.getElementsByClassName("siropuShoutboxMessage").length; i++ ) { 
 		effectElements.push(document.getElementsByClassName("siropuShoutboxMessage")[i])
 	}
-
+	//console.log("EffectElements: ", effectElements.length)
 	for (var i= 0; i < effectElements.length; i++) {
 		if (effectElements[i] != undefined) {
 			if (settings.schlog_or_shlog.value != "Off") {
@@ -675,7 +676,10 @@ function changeElements(settings) {
 				effectElements[i].innerHTML = effectElements[i].innerHTML.replace(settings.schlog_or_shlog.value.split(" ")[0].toUpperCase(), settings.schlog_or_shlog.value.split(" ")[2].toUpperCase()); 
 			}
 			
-			var matches = effectElements[i].innerHTML.match(regex)
+			var matches = null
+			if (settings.disable_text_tags.value == false) {
+				matches = effectElements[i].innerHTML.match(regex)
+			}
 			if (matches) {
 				for (m=0;m < matches.length;m++) {
 					var matchTagSettings = matches[m].match(bracketregex)[0].replace("[","").replace("]","")
