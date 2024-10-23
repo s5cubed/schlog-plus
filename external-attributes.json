@@ -24,6 +24,21 @@
 		},
 		"1259": {
 			"pins": ["PinkTriangle"]
+		},
+		"775": {
+			"pins": ["PinkTriangle"]
+		},
+		"1376": {
+			"pins": ["PinkTriangle"]
+		},
+		"1347": {
+			"pins": ["PinkTriangle"]
+		},
+		"375": {
+			"pins": ["PinkTriangle"]
+		},
+		"1356": {
+			"pins": ["PinkTriangle"]
 		}
 	}
 } 
