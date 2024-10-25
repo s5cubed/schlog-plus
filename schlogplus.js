@@ -211,7 +211,7 @@ function getSettings(settings) {
 
 	if (settings.post_height_limit.value) {
 		var style = document.createElement("style")
-		style.textContent = ".bbWrapper {max-height: " + settings.post_height_limit.value + "px; overflow: scroll;}"
+		style.textContent = ".bbWrapper {max-height: " + settings.post_height_limit.value + "px; overflow: auto;}"
 		document.head.appendChild(style)
 	}
 	
