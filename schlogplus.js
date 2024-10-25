@@ -170,7 +170,8 @@ function newstufferroravoidance(settings) {
 		"greentext_colour": "#789922",
 		"orangetext_colour":  "#f6750b",
 		"bluetext_colour": "#6577E6",
-		"disable_text_tags":"true"
+		"disable_text_tags":"true",
+		"post_height_limit": 500,
 	}
 	for (i in defaultvalues) {
 		if (settings[i] == undefined) {
@@ -208,6 +209,12 @@ function getSettings(settings) {
 		}
 	}
 
+	if (settings.post_height_limit.value) {
+		var style = document.createElement("style")
+		style.textContent = ".bbWrapper {max-height: " + settings.post_height_limit.value + "px; overflow: scroll;}"
+		document.head.appendChild(style)
+	}
+	
 	if (settings.schlog_plus_news.value) {
 		var newsDiv = document.createElement("div")
 		newsDiv.style = "text-align: center;"

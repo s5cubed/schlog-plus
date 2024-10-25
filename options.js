@@ -66,6 +66,14 @@ var settings = {
         "description": "Change the default reaction text ",
     },
 	"Feature Control":"Configure site features to your liking",
+	"post_height_limit": {
+        "type":"slider",
+        "value":500,
+        "min": 100,
+        "max":5000,
+        "step":1,
+        "description": "Change the maximum height of posts.",
+    },
 	"toggle_shoutbox_anywhere": {
         "type":"toggle",
         "value":false,
