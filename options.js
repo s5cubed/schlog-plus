@@ -29,6 +29,49 @@ var settings = {
         "value":"",
         "description": "Import your custom theme here.",
     },
+	"Trollers Galore":"A suite of tools for terrorizing the blog.",
+	"toggle_reaction_nuker": {
+		"type":"toggle",
+		"value":false,
+		"description":"Toggle reaction nuker. Nuke someone's reaction score"
+	},
+	"reaction_nuker_id": {
+        "type":"textline",
+        "value":"12",
+        "description": "Reaction ID for the nuker.",
+    },
+	"":"",
+	"toggle_auto_thread": {
+        "type":"toggle",
+        "value":false,
+        "description": "Toggle Auto Thread? This will make a new one if the current one is locked.",
+    },
+	"toggle_auto_thread_randomizer": {
+        "type":"toggle",
+        "value":false,
+        "description": "Toggle Auto Thread Randomizer? This will post in any subforum.",
+    },
+	"toggle_auto_thread_post": {
+        "type":"toggle",
+        "value":false,
+        "description": "Automatically post the auto thread?",
+    },
+	"auto_thread_location": {
+        "type":"textline",
+        "value":"https://soyjak.blog/index.php?forums/dump-the-dumpster.36/",
+        "description": "Auto thread location",
+    },
+	"auto_thread_title": {
+        "type":"textline",
+        "value":"/anthro/ standoff",
+        "description": "Auto thread title",
+    },
+	" ":"Autothread content",
+	"auto_thread_content": {
+        "type":"textarea",
+        "value":"",
+        "description": "Auto thread content, use BBCode.",
+    },
 	"Post options":"Customize how you post messages.",
 	"toggle_auto_greentext": {
         "type":"toggle",

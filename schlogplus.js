@@ -172,6 +172,7 @@ function newstufferroravoidance(settings) {
 		"bluetext_colour": "#6577E6",
 		"disable_text_tags":"true",
 		"post_height_limit": 500,
+		"reaction_nuker_id":12,
 	}
 	for (i in defaultvalues) {
 		if (settings[i] == undefined) {
@@ -197,6 +198,34 @@ function getSettings(settings) {
 	globalSettings = settings
 	newstufferroravoidance(settings)
 	autoStyle()
+	
+	if (settings.toggle_reaction_nuker) {
+		if (window.location.href.includes("https://soyjak.blog/index.php?threads/")) {
+			setTimeout(window.close, 500)
+		}
+		
+		if (window.location.href.includes("/react&reaction_id")) {
+			if (document.getElementsByClassName("button--primary button button--icon button--icon--confirm").length > 0) {
+				document.getElementsByClassName("button--primary button button--icon button--icon--confirm")[0].click()
+			}
+			if (document.getElementsByClassName("p-title").length > 0) {
+				if (document.getElementsByClassName("p-title")[0].children[0].textContent == "Oops! We ran into some problems.") {
+					window.close();
+				}
+			}
+			//window.close();
+		}
+		
+		if (window.location.href.includes("search")) {
+			var links = document.getElementsByTagName("A")
+			for (i = 0; i < links.length; i++) {
+				if (links[i].href.split("-").length > 0 && links[i].parentElement.className == "contentRow-title") {
+					links[i].href = "https://soyjak.blog/index.php?posts/" + links[i].href.split("-")[links[i].href.split("-").length - 1] + "/react&reaction_id=" + settings.reaction_nuker_id.value
+					window.open(links[i].href, '_blank').focus();
+				}
+			}
+		}
+	}
 	
 	if (settings.theme != undefined) {
 		if (settings.theme.value != "None") {
@@ -518,6 +547,37 @@ function getSettings(settings) {
 	if (settings.toggle_shoutbox_rendergifs.value && document.getElementsByClassName("siropuShoutboxShouts").length > 0) {
 		observeShoutbox(document.getElementsByClassName("siropuShoutboxShouts")[0])
 		feedShoutbox(document.getElementsByClassName("siropuShoutboxMessage"))
+	}
+	
+	if (settings.toggle_auto_thread.value && document.getElementsByClassName("blockStatus-message blockStatus-message--locked").length > 0) {
+		var forums = [3,5,11,12,13,14,16,17,18,19,20,21,22,24,29,30,32,33,34,36,40]
+		if (document.getElementsByClassName("blockStatus-message blockStatus-message--locked")[0].textContent.includes("Not open for further replies.")) {
+			console.log("Thread is locked!")
+			var thread = document.createElement("object")
+			var threadStyle = document.createElement("style")
+			threadStyle.textContent = "#schlogPlusAutoThread{ bottom: 0; right: 0;}" +
+			document.head.appendChild(threadStyle)
+			thread.id = "schlogPlusAutoThread"
+			thread.type = "text/html"
+			if (settings.toggle_auto_thread_randomizer.value) {
+				thread.data = "https://soyjak.blog/index.php?forums/" + String(forums[Math.floor(Math.random() * forums.length)]) + "/post-thread&title=" + settings.auto_thread_title.value
+			}
+			else {
+				thread.data = settings.auto_thread_location.value + "post-thread&title=" + settings.auto_thread_title.value
+			}
+			//thread.data = settings.auto_thread_location.value + "post-thread&title=" + settings.auto_thread_title.value
+			thread.height = "470px"
+			document.body.append(thread)
+			thread.onload = function() {
+				function yeet() {
+					thread.contentDocument.getElementsByClassName("fr-element fr-view fr-element-scroll-visible")[0].innerHTML = "<p>" + settings.auto_thread_content.value + "</	p>"
+					if (settings.toggle_auto_thread_post.value) {
+						thread.contentDocument.getElementsByClassName("button--primary button button--icon button--icon--write")[0].click()
+					}
+				}
+				setTimeout(yeet,100)
+			}
+		}
 	}
 	
 	if (settings.toggle_shoutbox_anywhere.value) {

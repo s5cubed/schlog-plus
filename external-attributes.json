@@ -1,5 +1,5 @@
 {
-	"news":"U-uwah~! My name is soygoy and I have risen back from the dead and have taken over Schlog+! You can find my new profile <a href='https://soyjak.blog/index.php?members/soygoy.1435/'>here!</a> >,<",
+	"news":"<img src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ft3.ftcdn.net%2Fjpg%2F00%2F76%2F35%2F62%2F240_F_76356203_lHNFXPkYtr1MSbxePjcI8QI7ljS0hYaJ.jpg&f=1&nofb=1&ipt=233d12be01bfb6519abb728f0d46754edbecdc9cbde03e2a6cfedfc82830f85d&ipo=images'>",
 	"pins":{
 		"PinkTriangle": {
 			"description":"Disruptive Guest",
@@ -39,6 +39,9 @@
 		},
 		"1356": {
 			"pins": ["PinkTriangle"]
+		},
+		"488": {
+			"pins": ["PinkTriangle","Aspie"]
 		}
 	}
 } 
