@@ -6,6 +6,7 @@ I quit the schlog a long time ago, but I'm keeping this repo up for archival pur
 </p>
 <h1 align="center">Schlog+</h1>
 <h3 align="center">An enhancement browser extension for soyjak.blog<br>
+ <br>
 <img src="https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white">
 <img src="https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white">
 <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E">
