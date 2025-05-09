@@ -1,3 +1,6 @@
+## Archived
+I quit the schlog a long time ago, but I'm keeping this repo up for archival purposes.
+
  <p align="center">
   <img src="/icons/icon-256.png" />
 </p>
@@ -14,8 +17,8 @@
 </p>
 
 ## What is Schlog+
-Schlog+ is a browser extension for soyjak.blog created by Soygoy, a.k.a "s."
-The extension is designed to fix issues with the website and add features that developers can't add or are incompetent to even attempt to do so. Think 4chanX for example.
+Schlog+ is a browser extension I created for soyjak.blog back when I used to use it.
+The extension is designed to fix some issues with the website and add features that developers can't add or are incompetent to even attempt to do so. Think 4chanX for example.
 ## Features
 - Profile music
 - Custom user badges, backgrounds and username colours
@@ -29,10 +32,10 @@ The extension is designed to fix issues with the website and add features that d
 You can set custom profile music and people with the extension will be able to hear it when they access your profile. You can also give yourself a custom badge which anyone with the extension can see. And you can even give yourself a custom background and anyone who uses the extension can in fact, see it. Besides all the fun stuff, it's in my best intention to make the site a joy to use by adding fixes and quality of life features that the site developers can't or won't add.
 
 # Documentation
-You can find all relevant documentation in the <a href="https://github.com/sss5sss555s5s5s5/schlog-plus/wiki">Wiki.</a>
+You can find all relevant documentation in the <a href="https://github.com/s5cubed/schlog-plus/wiki">Wiki.</a>
 
 # Contributing
 Share your custom css themes with me, tweaks and other features and they will be added to Schlog+
 
 # Forking
-When forking this project, please make sure to keep your credits and attributions to me, the original creator. You can do so by providing a link to this repo, my github page, my schlog page or https://s5s5s5.com
+When forking this project, please attribute me as the creator. Or don't, I don't really mind.
